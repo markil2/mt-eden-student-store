@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+/* ── Design tokens ─────────────────────────────────────────────── */
+@theme {
+  --color-navy: #0a3473;
+  --color-navy-deep: #072654;
+  --color-navy-soft: #e6ecf5;
+  --color-gold: #f4bd2b;
+  --color-gold-soft: #fdf0c8;
+  --color-ink: #191919;
+  --color-ink-muted: #5b5852;
+  --color-cream: #fff9ed;
+  --color-cream-deep: #f6eedc;
+  --color-line: #e7dcc4;
+
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --animate-underline: underline-in 0.9s 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  @keyframes underline-in {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+}
+
+@layer base {
+  :root {
+    /* Height of the sticky site header (status bar + nav). Used by sticky menu tabs. */
+    --header-h: 6.1rem;
+    @media (width >= 40rem) {
+      --header-h: 7.1rem;
+    }
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-navy);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ── Reusable primitives ───────────────────────────────────────── */
+@utility container-page {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  @media (width >= 48rem) {
+    padding-inline: 2rem;
+  }
+}
+
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* The dotted price leader, a nod to the printed Day Menu */
+@utility leader {
+  flex: 1;
+  min-width: 1rem;
+  margin-inline: 0.5rem;
+  translate: 0 -0.3em;
+  border-bottom: 1.5px dotted color-mix(in oklab, var(--color-ink) 28%, transparent);
+}
+
+@utility press {
+  transition: transform 160ms var(--ease-out-soft), background-color 200ms, color 200ms, box-shadow 200ms;
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

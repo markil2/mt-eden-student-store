@@ -213,7 +213,7 @@ insert into public.product_availability (product_id, is_available) values ('tea'
 
 insert into public.store_settings (id, ordering_paused, pause_message, order_cutoff, enforce_cutoff, timezone, pickup_enabled, pickup_location, delivery_enabled, delivery_fee_cents, require_room, hours, hours_note, contact)
   values (1, false, 'Online ordering is paused right now. Check back soon!', '08:00', true, 'America/Los_Angeles', true, 'Resting room, E Hall', true, 0, true,
-    '[{"label":"Before school","hours":"About 30 minutes before"},{"label":"After school","hours":"About 30 minutes after"}]'::jsonb, 'Exact times vary day to day.', '{"phone":"415-506-8593","instagram":"@MTEdenEntrepreneurs","instagramUrl":"https://www.instagram.com/mtedenentrepreneurs/","email":null}'::jsonb)
+    '[{"label":"Before school","hours":"About 30 minutes before"},{"label":"After school","hours":"About 30 minutes after"}]'::jsonb, 'Exact times vary day to day.', '{"instagram":"@mtedenentrepreneurship","instagramUrl":"https://www.instagram.com/mtedenentrepreneurship/"}'::jsonb)
   on conflict (id) do nothing;
 
 insert into public.fulfillment_windows (id, label, detail, pickup, delivery, capacity, sort) values ('before-school', 'Before school', 'About 30 minutes before school', true, true, null, 0) on conflict (id) do nothing;

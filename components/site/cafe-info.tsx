@@ -70,22 +70,6 @@ export function CafeInfo() {
           )}
         </InfoBlock>
 
-        <InfoBlock icon={<span className="font-display text-lg leading-none">?</span>} title="Questions?">
-          Text us at{" "}
-          <a className="font-semibold text-navy underline-offset-4 hover:underline" href={`tel:${settings.contact.phone.replace(/\D/g, "")}`}>
-            {settings.contact.phone}
-          </a>{" "}
-          or DM{" "}
-          <a
-            className="font-semibold text-navy underline-offset-4 hover:underline"
-            href={settings.contact.instagramUrl}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {settings.contact.instagram}
-          </a>
-          .
-        </InfoBlock>
       </Reveal>
     </section>
   );

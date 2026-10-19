@@ -33,10 +33,9 @@ export const defaultSettings: StoreSettings = {
     eligibleRooms: null,
   },
   contact: {
-    phone: "415-506-8593", // printed menu
-    instagram: "@MTEdenEntrepreneurs", // printed menu
-    instagramUrl: "https://www.instagram.com/mtedenentrepreneurs/",
-    email: null,
+    // Confirmed: Instagram is the only contact.
+    instagram: "@mtedenentrepreneurship",
+    instagramUrl: "https://www.instagram.com/mtedenentrepreneurship/",
   },
 };
 

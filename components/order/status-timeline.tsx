@@ -18,7 +18,7 @@ export function StatusTimeline({ order }: { order: CustomerOrder }) {
         </span>
         <div>
           <p className="font-semibold">This order was canceled</p>
-          <p className="text-sm text-ink-muted">Questions? Text the cafe and include your order number.</p>
+          <p className="text-sm text-ink-muted">Questions? DM us on Instagram @mtedenentrepreneurship with your order number.</p>
         </div>
       </div>
     );

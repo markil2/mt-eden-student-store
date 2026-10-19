@@ -101,10 +101,8 @@ export interface StoreSettings {
     eligibleRooms: string[] | null;
   };
   contact: {
-    phone: string;
     instagram: string;
     instagramUrl: string;
-    email: string | null;
   };
 }
 

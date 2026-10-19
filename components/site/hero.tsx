@@ -24,7 +24,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease }}
         >
-          Student-run · Mt. Eden High School
+          Run by Entrepreneurship · Mt. Eden High School
         </motion.p>
 
         <motion.h1
@@ -69,7 +69,7 @@ export function Hero() {
             <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
           </ButtonLink>
           <ButtonLink href="/menu#breakfast" size="lg" variant="secondary">
-            Explore the menu
+            Menu
           </ButtonLink>
         </motion.div>
       </div>

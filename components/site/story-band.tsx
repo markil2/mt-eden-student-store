@@ -8,7 +8,7 @@ export function StoryBand() {
   return (
     <section className="container-page grid items-center gap-10 py-20 md:grid-cols-[1fr_1.1fr] md:gap-16 md:py-28">
       <Reveal className="order-2 md:order-1">
-        <p className="eyebrow text-ink-muted">Run by students</p>
+        <p className="eyebrow text-ink-muted">Run by Entrepreneurship</p>
         <h2 className="mt-3 font-display text-4xl leading-[1.05] text-navy md:text-[3.4rem]">
           Made by Mt. Eden, <span className="italic">for</span> Mt. Eden.
         </h2>

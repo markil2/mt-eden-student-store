@@ -17,12 +17,13 @@ Phase 1 is built on the answers below. Menu data lives in `lib/data/menu.ts`, st
 - Last order is 8 AM, and it applies to after-school orders too.
 - Pickup spot: resting room, E Hall.
 - Customers choose Before school or After school. There's no limit on orders per window.
+- Contact: Instagram @mtedenentrepreneurship only (no phone or email on the site).
+- The cafe is described as "Run by Entrepreneurship".
 - Classroom delivery is open to any room, and students type their own room number. No delivery fee.
 
 ## Still open
 - **Chai Latte**: price when it's back in stock. It stays unorderable until a price is set.
 - **Flavors**: do smoothie, Italian soda, energy drink, Gatorade, chips, protein bars or tea have flavor choices?
-- **Contact email**: confirm it, and confirm the Instagram URL (https://www.instagram.com/mtedenentrepreneurs/).
 
 ## Before Phase 3 (payments)
 - School-approved payment processor and authorized account owner

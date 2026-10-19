@@ -10,7 +10,7 @@ export default function AboutPage() {
     <div className="container-page py-14 md:py-24">
       <p className="eyebrow text-ink-muted">About the store</p>
       <h1 className="mt-4 max-w-3xl font-display text-5xl leading-[1.02] text-navy md:text-7xl">
-        A real cafe, run by students.
+        A real cafe, run by Entrepreneurship.
       </h1>
       <div className="mt-12 grid gap-12 md:grid-cols-[1.1fr_1fr] md:gap-16">
         <ProductImage

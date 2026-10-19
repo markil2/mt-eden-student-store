@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { AtSign, Phone } from "lucide-react";
+import { AtSign } from "lucide-react";
 import { useStoreData } from "@/lib/store/store-data";
 import { formatCutoff } from "@/lib/data/settings";
 
@@ -19,7 +19,7 @@ export function SiteFooter() {
             <p className="font-display text-2xl leading-tight">Mt. Eden Student Store</p>
           </div>
           <p className="mt-5 text-sm leading-relaxed text-cream/70">
-            A student-run cafe at Mt. Eden High School, brought to you by Mt. Eden Entrepreneurship.
+            The Mt. Eden High School cafe, run by Mt. Eden Entrepreneurship.
           </p>
         </div>
 
@@ -50,11 +50,6 @@ export function SiteFooter() {
 
         <FooterColumn title="Contact">
           <li>
-            <a href={`tel:${contact.phone.replace(/\D/g, "")}`} className="inline-flex items-center gap-2 hover:text-gold">
-              <Phone className="size-4" aria-hidden /> {contact.phone}
-            </a>
-          </li>
-          <li>
             <a
               href={contact.instagramUrl}
               target="_blank"
@@ -64,7 +59,6 @@ export function SiteFooter() {
               <AtSign className="size-4" aria-hidden /> {contact.instagram}
             </a>
           </li>
-          <li className="text-cream/60">Email: to be confirmed</li>
         </FooterColumn>
       </div>
 

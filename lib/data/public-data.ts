@@ -31,10 +31,10 @@ export async function getPublicStoreData(): Promise<PublicStoreData> {
   try {
     return await fetchPublicStoreData(getPublicServerSupabase());
   } catch (err) {
-    // Keep the site browsable if Supabase is briefly unreachable. Orders are still
-    // validated against the live database, so nothing can be bought from stale data.
-    console.error(err);
-    cacheLife("seconds");
+    // Keep the site browsable if Supabase is unreachable or misconfigured (e.g. a wrong key in
+    // Vercel). Orders are still validated against the live database, so nothing can be bought
+    // from this copy. Don't shorten the cache life here: that makes the page dynamic and fails the build.
+    console.error("[store-data] Falling back to the built-in menu:", err);
     return localStoreData;
   }
 }

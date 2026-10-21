@@ -56,8 +56,8 @@ export const useCart = create<CartState>()(
     }),
     {
       name: "mteden-cart",
-      version: 2,
-      // v2: sandwich options changed (no biscuit, bacon is an add-on). Old carts are cleared.
+      version: 3,
+      // v2/v3: sandwich, bagel and chips options changed. Old carts are cleared.
       migrate: () => ({ lines: [] }),
       storage: createJSONStorage(() => localStorage),
       partialize: (s) => ({ lines: s.lines }),

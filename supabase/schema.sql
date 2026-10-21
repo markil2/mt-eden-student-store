@@ -73,6 +73,9 @@ create table if not exists public.option_groups (
   hint        text,
   required    boolean not null default false,
   max_select  int not null default 1 check (max_select >= 1),
+  -- "First N included, then +X each" (e.g. first protein free, +$1 per extra)
+  included_count   int check (included_count is null or included_count >= 0),
+  extra_each_cents int not null default 0 check (extra_each_cents between 0 and 5000),
   sort        int not null default 0,
   unique (product_id, key)
 );

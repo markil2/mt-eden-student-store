@@ -5,4 +5,5 @@ import { products } from "./menu";
 export const defaultAvailability: Availability = {
   ...Object.fromEntries(products.map((p) => [p.id, true])),
   "chai-latte": false, // "OOS" on the printed menu
+  "energy-drink": false, // confirmed sold out
 };

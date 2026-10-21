@@ -8,10 +8,12 @@ import type { Availability, CartLine, Catalog, Product, Selections } from "@/lib
 export function unitPriceCents(product: Product, selections: Selections): number {
   let total = product.priceCents;
   for (const group of product.optionGroups) {
-    for (const optionId of selections[group.id] ?? []) {
-      const option = group.options.find((o) => o.id === optionId);
-      if (option) total += option.priceDeltaCents;
+    const chosen = (selections[group.id] ?? []).filter((id) => group.options.some((o) => o.id === id));
+    for (const optionId of chosen) {
+      total += group.options.find((o) => o.id === optionId)!.priceDeltaCents;
     }
+    // "First one included, then +$X each" (e.g. extra proteins).
+    if (group.extraEachCents) total += Math.max(0, chosen.length - (group.includedCount ?? 0)) * group.extraEachCents;
   }
   return total;
 }

@@ -35,9 +35,11 @@ const sandwichBread: OptionGroup = {
   label: "Bread",
   required: true,
   max: 1,
-  // Confirmed: bagel (plain) or croissant only. No biscuit.
+  // Confirmed: three bagel types or a croissant. No biscuit.
   options: [
-    { id: "bagel", label: "Bagel", priceDeltaCents: 0 },
+    { id: "bagel-plain", label: "Plain bagel", priceDeltaCents: 0 },
+    { id: "bagel-everything", label: "Everything bagel", priceDeltaCents: 0 },
+    { id: "bagel-cheese", label: "Cheese bagel", priceDeltaCents: 0 },
     { id: "croissant", label: "Croissant", priceDeltaCents: 0 },
   ],
 };
@@ -54,28 +56,23 @@ const cheese: OptionGroup = {
   ],
 };
 
+/** Confirmed: pick 1–3 proteins; the first is included, each extra is +$1. */
 const protein: OptionGroup = {
   id: "protein",
   label: "Protein",
+  hint: "First protein included · +$1 each extra",
   required: true,
-  max: 1,
+  max: 3,
+  includedCount: 1,
+  extraEachCents: 100,
   options: [
     { id: "turkey", label: "Turkey", priceDeltaCents: 0 },
     { id: "chicken-sausage", label: "Chicken sausage", priceDeltaCents: 0 },
+    { id: "bacon", label: "Bacon", priceDeltaCents: 0 },
   ],
 };
 
-/** Confirmed: bacon is a free optional extra on top of turkey or chicken sausage. */
-const addBacon: OptionGroup = {
-  id: "extras",
-  label: "Add bacon",
-  hint: "No extra charge",
-  required: false,
-  max: 1,
-  options: [{ id: "bacon", label: "Bacon", priceDeltaCents: 0 }],
-};
-
-/** "+ OJ / Coffee / Drink" — assumed: any drink priced $3 or less (flagged for confirmation). */
+/** "+ OJ / Coffee / Drink" — confirmed: any drink priced $3 or less (now incl. hot chocolate). */
 const comboDrink: OptionGroup = {
   id: "drink",
   label: "Drink",
@@ -90,6 +87,7 @@ const comboDrink: OptionGroup = {
     { id: "lemonade", label: "Lemonade", priceDeltaCents: 0, productId: "lemonade" },
     { id: "energy-drink", label: "Energy drink", priceDeltaCents: 0, productId: "energy-drink" },
     { id: "gatorade", label: "Gatorade", priceDeltaCents: 0, productId: "gatorade" },
+    { id: "hot-chocolate", label: "Hot chocolate", priceDeltaCents: 0, productId: "hot-chocolate" },
   ],
 };
 
@@ -102,9 +100,9 @@ export const products: Product[] = [
     name: "Breakfast Sandwich Combo",
     categoryId: "breakfast",
     priceCents: 1000,
-    description: "Egg with turkey or chicken sausage, plus OJ, coffee or a drink.",
+    description: "Egg with turkey, chicken sausage or bacon, plus OJ, coffee or a drink.",
     image: sampleImages.hero,
-    optionGroups: [sandwichBread, protein, addBacon, cheese, comboDrink],
+    optionGroups: [sandwichBread, protein, cheese, comboDrink],
     popular: true,
   },
   {
@@ -112,9 +110,9 @@ export const products: Product[] = [
     name: "Breakfast Sandwich + Protein",
     categoryId: "breakfast",
     priceCents: 800,
-    description: "Egg with turkey or chicken sausage. Add bacon or cheese if you like.",
+    description: "Egg with turkey, chicken sausage or bacon. Extra proteins $1 each.",
     image: unsplash("1533089860892-a7c6f0a88666", "Fried egg with bacon on toasted bread"),
-    optionGroups: [sandwichBread, protein, addBacon, cheese],
+    optionGroups: [sandwichBread, protein, cheese],
     popular: true,
   },
   {
@@ -138,13 +136,25 @@ export const products: Product[] = [
   },
   {
     id: "bagel",
-    // Confirmed: $3 for a plain bagel with cream cheese; no options.
+    // Confirmed: $3 bagel with cream cheese; choose plain, everything or cheese.
     name: "Bagel with Cream Cheese",
     categoryId: "breakfast",
     priceCents: 300,
-    description: "A plain bagel with cream cheese.",
+    description: "Plain, everything or cheese bagel with cream cheese.",
     image: unsplash("1585445490387-f47934b73b54", "Bagels on a cooling rack"),
-    optionGroups: [],
+    optionGroups: [
+      {
+        id: "bagel",
+        label: "Bagel",
+        required: true,
+        max: 1,
+        options: [
+          { id: "plain", label: "Plain", priceDeltaCents: 0 },
+          { id: "everything", label: "Everything", priceDeltaCents: 0 },
+          { id: "cheese", label: "Cheese", priceDeltaCents: 0 },
+        ],
+      },
+    ],
   },
   {
     id: "muffin",
@@ -156,7 +166,28 @@ export const products: Product[] = [
   },
 
   // Snacks
-  { id: "chips", name: "Chips", categoryId: "snacks", priceCents: 200, image: sampleImages.snacks, optionGroups: [] },
+  {
+    id: "chips",
+    name: "Chips",
+    categoryId: "snacks",
+    priceCents: 200,
+    description: "Cheetos Puffs, Sour Cream & Onion, Ruffles or Doritos.",
+    image: sampleImages.snacks,
+    optionGroups: [
+      {
+        id: "flavor",
+        label: "Flavor",
+        required: true,
+        max: 1,
+        options: [
+          { id: "cheetos-puffs", label: "Cheetos Puffs", priceDeltaCents: 0 },
+          { id: "sour-cream-onion", label: "Sour Cream & Onion", priceDeltaCents: 0 },
+          { id: "ruffles", label: "Ruffles", priceDeltaCents: 0 },
+          { id: "doritos", label: "Doritos", priceDeltaCents: 0 },
+        ],
+      },
+    ],
+  },
   {
     id: "popcorn",
     name: "Popcorn",
@@ -207,7 +238,7 @@ export const products: Product[] = [
     id: "smoothie",
     name: "Smoothie",
     categoryId: "beverages",
-    priceCents: 500,
+    priceCents: 600,
     image: unsplash("1600718374662-0483d2b9da44", "A berry smoothie with falling berries"),
     optionGroups: [],
   },
@@ -224,7 +255,7 @@ export const products: Product[] = [
     id: "hot-chocolate",
     name: "Hot Chocolate",
     categoryId: "beverages",
-    priceCents: 400,
+    priceCents: 300,
     image: unsplash("1517578239113-b03992dcdd25", "A cup of hot chocolate on a saucer"),
     optionGroups: [],
   },
@@ -240,9 +271,17 @@ export const products: Product[] = [
     id: "italian-soda",
     name: "Italian Soda",
     categoryId: "beverages",
-    priceCents: 700,
+    priceCents: 500,
     image: unsplash("1497534446932-c925b458314e", "Bright sodas with strawberries and lime"),
-    optionGroups: [],
+    optionGroups: [
+      {
+        id: "add",
+        label: "Add",
+        required: false,
+        max: 1,
+        options: [{ id: "whipped-cream", label: "Whipped cream", priceDeltaCents: 0 }],
+      },
+    ],
   },
   { id: "gatorade", name: "Gatorade", categoryId: "beverages", priceCents: 300, image: null, optionGroups: [] },
 

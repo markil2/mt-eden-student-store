@@ -34,6 +34,8 @@ export interface OptionGroupRow {
   hint: string | null;
   required: boolean;
   max_select: number;
+  included_count: number | null;
+  extra_each_cents: number;
   sort: number;
   options: OptionRow[];
 }
@@ -82,7 +84,7 @@ export interface WindowRow {
 
 /** Select string for products with their option groups and options. */
 export const PRODUCT_SELECT =
-  "id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort, archived, option_groups(key, label, hint, required, max_select, sort, options(key, label, price_delta_cents, linked_product_id, sort))";
+  "id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort, archived, option_groups(key, label, hint, required, max_select, included_count, extra_each_cents, sort, options(key, label, price_delta_cents, linked_product_id, sort))";
 
 const bySort = <T extends { sort: number }>(a: T, b: T) => a.sort - b.sort;
 
@@ -101,6 +103,8 @@ export function mapProduct(row: ProductRow): Product {
       hint: g.hint ?? undefined,
       required: g.required,
       max: g.max_select,
+      includedCount: g.included_count ?? undefined,
+      extraEachCents: g.extra_each_cents || undefined,
       options: [...(g.options ?? [])].sort(bySort).map((o) => ({
         id: o.key,
         label: o.label,

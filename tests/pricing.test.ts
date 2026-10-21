@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { products } from "@/lib/data/menu";
+import { defaultAvailability } from "@/lib/data/availability";
 import {
   describeSelections,
   emptySelections,
@@ -16,18 +17,17 @@ const protein = catalog["sandwich-protein"];
 const eggCheese = catalog["sandwich-egg-cheese"];
 
 describe("menu rules (confirmed by the cafe)", () => {
-  it("only offers bagel or croissant — no biscuit", () => {
+  it("bread is plain, everything or cheese bagel, or croissant — no biscuit", () => {
     const bread = protein.optionGroups.find((g) => g.id === "bread")!;
-    expect(bread.options.map((o) => o.label)).toEqual(["Bagel", "Croissant"]);
+    expect(bread.options.map((o) => o.label)).toEqual(["Plain bagel", "Everything bagel", "Cheese bagel", "Croissant"]);
   });
 
-  it("protein is turkey or chicken sausage; bacon is a free optional extra", () => {
+  it("protein is turkey, chicken sausage or bacon — pick up to 3, no separate bacon add-on", () => {
     const p = protein.optionGroups.find((g) => g.id === "protein")!;
     expect(p.required).toBe(true);
-    expect(p.options.map((o) => o.id)).toEqual(["turkey", "chicken-sausage"]);
-    const bacon = protein.optionGroups.find((g) => g.id === "extras")!;
-    expect(bacon.required).toBe(false);
-    expect(bacon.options[0].priceDeltaCents).toBe(0);
+    expect(p.max).toBe(3);
+    expect(p.options.map((o) => o.id)).toEqual(["turkey", "chicken-sausage", "bacon"]);
+    for (const s of [combo, protein]) expect(s.optionGroups.some((g) => g.id === "extras")).toBe(false);
   });
 
   it("cheese is optional on every sandwich", () => {
@@ -36,17 +36,52 @@ describe("menu rules (confirmed by the cafe)", () => {
     }
   });
 
-  it("the $3 bagel comes with cream cheese and has no options", () => {
-    expect(catalog.bagel.priceCents).toBe(300);
-    expect(catalog.bagel.optionGroups).toHaveLength(0);
+  it("the $3 bagel with cream cheese requires a bagel type", () => {
+    const bagel = catalog.bagel;
+    expect(bagel.priceCents).toBe(300);
+    expect(missingRequiredGroup(bagel, emptySelections(bagel))).toBe("Bagel");
+    expect(bagel.optionGroups[0].options.map((o) => o.label)).toEqual(["Plain", "Everything", "Cheese"]);
+  });
+
+  it("chips require a flavor", () => {
+    const chips = catalog.chips;
+    expect(chips.optionGroups[0].options.map((o) => o.label)).toEqual([
+      "Cheetos Puffs",
+      "Sour Cream & Onion",
+      "Ruffles",
+      "Doritos",
+    ]);
+    expect(missingRequiredGroup(chips, emptySelections(chips))).toBe("Flavor");
+  });
+
+  it("drink prices: Italian soda $5 (free whipped cream), smoothie $6, hot chocolate $3", () => {
+    expect(unitPriceCents(catalog["italian-soda"], { add: ["whipped-cream"] })).toBe(500);
+    expect(catalog.smoothie.priceCents).toBe(600);
+    expect(catalog["hot-chocolate"].priceCents).toBe(300);
+  });
+
+  it("hot chocolate is a combo drink choice", () => {
+    expect(combo.optionGroups.find((g) => g.id === "drink")!.options.some((o) => o.productId === "hot-chocolate")).toBe(true);
   });
 });
 
 describe("pricing", () => {
-  const sel = { bread: ["croissant"], protein: ["turkey"], extras: ["bacon"], cheese: [], drink: ["orange-juice"] };
+  const sel = { bread: ["croissant"], protein: ["turkey"], cheese: [], drink: ["orange-juice"] };
 
-  it("prices the combo at $10 with bacon included free", () => {
+  it("prices the combo at $10 with one protein", () => {
     expect(unitPriceCents(combo, sel)).toBe(1000);
+  });
+
+  it("charges +$1 for each protein after the first", () => {
+    const withProteins = (ids: string[]) => unitPriceCents(protein, { bread: ["bagel-plain"], protein: ids });
+    expect(withProteins(["turkey"])).toBe(800);
+    expect(withProteins(["turkey", "bacon"])).toBe(900);
+    expect(withProteins(["turkey", "chicken-sausage", "bacon"])).toBe(1000);
+    expect(unitPriceCents(combo, { ...sel, protein: ["turkey", "chicken-sausage", "bacon"] })).toBe(1200);
+  });
+
+  it("doesn't charge extra for unknown options", () => {
+    expect(unitPriceCents(protein, { bread: ["bagel-plain"], protein: ["turkey", "made-up"] })).toBe(800);
   });
 
   it("multiplies by quantity across lines", () => {
@@ -69,7 +104,12 @@ describe("pricing", () => {
   });
 
   it("describes choices in menu order", () => {
-    expect(describeSelections(combo, sel)).toEqual(["Croissant", "Turkey", "Bacon", "Orange juice"]);
+    expect(describeSelections(combo, { ...sel, protein: ["turkey", "bacon"] })).toEqual([
+      "Croissant",
+      "Turkey",
+      "Bacon",
+      "Orange juice",
+    ]);
   });
 
   it("merges identical lines regardless of selection order", () => {
@@ -83,6 +123,12 @@ describe("availability", () => {
   it("blocks a combo whose chosen drink is sold out", () => {
     expect(isLineAvailable(line, { "sandwich-combo": true, "orange-juice": false }, catalog)).toBe(false);
     expect(isLineAvailable(line, { "sandwich-combo": true, "orange-juice": true }, catalog)).toBe(true);
+  });
+
+  it("energy drink is sold out by default and blocks a combo that chose it", () => {
+    const energyCombo = { key: "e", productId: "sandwich-combo", quantity: 1, selections: { drink: ["energy-drink"] } };
+    expect(defaultAvailability["energy-drink"]).toBe(false);
+    expect(isLineAvailable(energyCombo, defaultAvailability, catalog)).toBe(false);
   });
 
   it("blocks items with no price yet (Chai Latte)", () => {

@@ -4,11 +4,14 @@ Phase 1 is built on the answers below. Menu data lives in `lib/data/menu.ts`, st
 
 ## Confirmed
 **Menu**
-- Sandwich bread: **Bagel** (plain) or **Croissant**. No biscuit.
-- Protein (the $8 sandwich and the $10 combo): **Turkey** or **Chicken sausage**, required. **Bacon** is an optional extra at no charge.
+- Sandwich bread: **Plain, Everything or Cheese bagel**, or **Croissant**. No biscuit.
+- Protein (the $8 sandwich and the $10 combo): **Turkey, Chicken sausage or Bacon**. Pick 1–3; the first is included, each extra is **+$1**.
 - Cheese (Cheddar or Provolone) is **optional** on every sandwich.
-- $10 combo drink: any drink priced $3 or less (OJ, hot coffee, tea, water, lemonade, energy drink, Gatorade).
-- **Bagel with Cream Cheese**: $3, plain bagel, no options.
+- $10 combo drink: any drink priced $3 or less (OJ, hot coffee, tea, water, lemonade, energy drink, Gatorade, hot chocolate).
+- **Bagel with Cream Cheese**: $3, choose Plain, Everything or Cheese.
+- **Chips** ($2): Cheetos Puffs, Sour Cream & Onion, Ruffles or Doritos.
+- **Italian Soda** $5 (whipped cream optional, free). **Smoothie** $6. **Hot Chocolate** $3.
+- **Energy Drink** marked sold out (staff can restock it in Admin → Menu).
 - **Muffin**: $3. There's no "muffin of the day".
 - Customers make every required choice themselves. Nothing is preselected.
 
@@ -23,7 +26,7 @@ Phase 1 is built on the answers below. Menu data lives in `lib/data/menu.ts`, st
 
 ## Still open
 - **Chai Latte**: price when it's back in stock. It stays unorderable until a price is set.
-- **Flavors**: do smoothie, Italian soda, energy drink, Gatorade, chips, protein bars or tea have flavor choices?
+- **Flavors**: do smoothie, Italian soda, energy drink, Gatorade, protein bars or tea have flavor choices? (Chips are done.)
 
 ## Before Phase 3 (payments)
 - School-approved payment processor and authorized account owner

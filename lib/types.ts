@@ -30,6 +30,10 @@ export interface OptionGroup {
   required: boolean;
   /** Max number of selections. 1 renders as a radio group. */
   max: number;
+  /** How many selections are included in the price (e.g. first protein). */
+  includedCount?: number;
+  /** Charge for each selection beyond `includedCount`, in cents (e.g. +$1 per extra protein). */
+  extraEachCents?: number;
   options: Option[];
 }
 

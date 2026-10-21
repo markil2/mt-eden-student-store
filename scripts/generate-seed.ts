@@ -40,8 +40,8 @@ lines.push(`delete from public.option_groups where product_id in (${products.map
 for (const p of products) {
   for (const [gi, g] of p.optionGroups.entries()) {
     lines.push(
-      `with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, sort)`,
-      `  values (${q(p.id)}, ${q(g.id)}, ${q(g.label)}, ${q(g.hint ?? null)}, ${b(g.required)}, ${g.max}, ${gi}) returning id)`,
+      `with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, sort)`,
+      `  values (${q(p.id)}, ${q(g.id)}, ${q(g.label)}, ${q(g.hint ?? null)}, ${b(g.required)}, ${g.max}, ${g.includedCount ?? "null"}, ${g.extraEachCents ?? 0}, ${gi}) returning id)`,
       `insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values`,
       g.options
         .map((o, oi) => `  (${q(o.id)}, ${q(o.label)}, ${o.priceDeltaCents}, ${q(o.productId ?? null)}, ${oi})`)
@@ -53,7 +53,7 @@ lines.push("");
 
 for (const p of products) {
   lines.push(
-    `insert into public.product_availability (product_id, is_available) values (${q(p.id)}, ${b(p.id !== "chai-latte")}) on conflict (product_id) do nothing;`,
+    `insert into public.product_availability (product_id, is_available) values (${q(p.id)}, ${b(!["chai-latte", "energy-drink"].includes(p.id))}) on conflict (product_id) do nothing;`,
   );
 }
 lines.push("");

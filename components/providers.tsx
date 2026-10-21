@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { MotionConfig } from "motion/react";
 import { Toaster } from "sonner";
-import { useCart } from "@/lib/store/cart";
+import { CART_STORAGE_KEY, shouldSyncCartFromOtherTab, useCart } from "@/lib/store/cart";
 import { useStoreData } from "@/lib/store/store-data";
 import { fetchPublicStoreData, type PublicStoreData } from "@/lib/data/catalog-mapper";
 import { getBrowserSupabase } from "@/lib/supabase/browser";
@@ -22,7 +22,7 @@ export function Providers({ initialData, children }: { initialData: PublicStoreD
     // Cart lives in localStorage; load it after mount so server and client markup match.
     useCart.persist.rehydrate();
     const onStorage = (e: StorageEvent) => {
-      if (e.key === "mteden-cart") useCart.persist.rehydrate();
+      if (e.key === CART_STORAGE_KEY && shouldSyncCartFromOtherTab(e.newValue)) useCart.persist.rehydrate();
     };
     window.addEventListener("storage", onStorage);
     return () => window.removeEventListener("storage", onStorage);

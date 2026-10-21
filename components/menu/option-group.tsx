@@ -3,6 +3,20 @@
 import { Check } from "lucide-react";
 import type { Availability, OptionGroup as OptionGroupType } from "@/lib/types";
 import { cn, formatCents } from "@/lib/format";
+import { QuantityStepper } from "@/components/ui/quantity-stepper";
+
+/**
+ * "How many?" groups (creamer, sugar packets): one optional choice whose option
+ * ids are 1, 2, 3… These show as a − / + stepper starting at 0 instead of chips.
+ */
+export function isAmountGroup(group: OptionGroupType): boolean {
+  return (
+    !group.required &&
+    group.max === 1 &&
+    group.options.length > 1 &&
+    group.options.every((o, i) => o.id === String(i + 1))
+  );
+}
 
 export function OptionGroupField({
   group,
@@ -18,6 +32,8 @@ export function OptionGroupField({
   invalid?: boolean;
   onChange: (next: string[]) => void;
 }) {
+  if (isAmountGroup(group)) return <AmountField group={group} selected={selected} onChange={onChange} />;
+
   const single = group.max === 1 && group.required;
   const inputType = single ? "radio" : "checkbox";
 
@@ -80,6 +96,37 @@ export function OptionGroupField({
           );
         })}
       </div>
+    </div>
+  );
+}
+
+function AmountField({
+  group,
+  selected,
+  onChange,
+}: {
+  group: OptionGroupType;
+  selected: string[];
+  onChange: (next: string[]) => void;
+}) {
+  const count = Number(selected[0] ?? 0) || 0;
+  const free = group.options.every((o) => o.priceDeltaCents === 0);
+  return (
+    <div className="flex items-center justify-between gap-4 py-5">
+      <div>
+        <p id={`group-${group.id}`} className="font-semibold text-ink">
+          {group.label}
+        </p>
+        <p className="mt-0.5 text-sm text-ink-muted">{group.hint ?? (free ? "Free" : "Optional")}</p>
+      </div>
+      <QuantityStepper
+        value={count}
+        min={0}
+        max={group.options.length}
+        onChange={(n) => onChange(n > 0 ? [String(n)] : [])}
+        label={group.label}
+        itemLabel={group.label.toLowerCase()}
+      />
     </div>
   );
 }

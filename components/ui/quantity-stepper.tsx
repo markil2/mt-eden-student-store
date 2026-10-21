@@ -10,6 +10,7 @@ export function QuantityStepper({
   max = 20,
   size = "md",
   label,
+  itemLabel = "quantity",
 }: {
   value: number;
   onChange: (value: number) => void;
@@ -17,6 +18,8 @@ export function QuantityStepper({
   max?: number;
   size?: "sm" | "md";
   label: string;
+  /** Used in the button labels, e.g. "Decrease creamer". */
+  itemLabel?: string;
 }) {
   const btn = cn(
     "press grid place-items-center rounded-full text-navy transition-colors hover:bg-navy/[0.07] disabled:opacity-30",
@@ -28,13 +31,13 @@ export function QuantityStepper({
       role="group"
       aria-label={label}
     >
-      <button type="button" className={btn} onClick={() => onChange(value - 1)} disabled={value <= min} aria-label="Decrease quantity">
+      <button type="button" className={btn} onClick={() => onChange(value - 1)} disabled={value <= min} aria-label={`Decrease ${itemLabel}`}>
         <Minus className="size-4" />
       </button>
       <span className={cn("text-center font-semibold tabular-nums", size === "sm" ? "w-6 text-sm" : "w-8")} aria-live="polite">
         {value}
       </span>
-      <button type="button" className={btn} onClick={() => onChange(value + 1)} disabled={value >= max} aria-label="Increase quantity">
+      <button type="button" className={btn} onClick={() => onChange(value + 1)} disabled={value >= max} aria-label={`Increase ${itemLabel}`}>
         <Plus className="size-4" />
       </button>
     </div>

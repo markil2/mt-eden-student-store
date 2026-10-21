@@ -120,8 +120,8 @@ function amountGroup(id: string, label: string, singular: string, plural: string
 }
 
 const coffeeAddIns: OptionGroup[] = [
-  amountGroup("creamer", "Creamer", "creamer", "creamers", "Free · tap again to remove"),
-  amountGroup("sugar", "Sugar packets", "sugar packet", "sugar packets", "Free · tap again to remove"),
+  amountGroup("creamer", "Creamer", "creamer", "creamers", "Free"),
+  amountGroup("sugar", "Sugar packets", "sugar packet", "sugar packets", "Free"),
 ];
 
 const comboCoffeeAddIns: OptionGroup[] = [

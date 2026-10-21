@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { products } from "@/lib/data/menu";
 import { defaultAvailability } from "@/lib/data/availability";
+import { isAmountGroup } from "@/components/menu/option-group";
 import {
   describeSelections,
   emptySelections,
@@ -73,6 +74,13 @@ describe("menu rules (confirmed by the cafe)", () => {
       expect(describeSelections(coffee, { creamer: ["2"], sugar: ["1"] })).toEqual(["2 creamers", "1 sugar packet"]);
     }
     expect(combo.optionGroups.filter((g) => g.id.startsWith("coffee-")).map((g) => g.required)).toEqual([false, false]);
+  });
+
+  it("creamer and sugar show as − / + steppers; other choices stay as buttons", () => {
+    const coffee = catalog["hot-coffee"];
+    expect(coffee.optionGroups.map(isAmountGroup)).toEqual([true, true]);
+    expect(combo.optionGroups.filter(isAmountGroup).map((g) => g.id)).toEqual(["coffee-creamer", "coffee-sugar"]);
+    expect(protein.optionGroups.some(isAmountGroup)).toBe(false);
   });
 
   it("hot chocolate is a combo drink choice", () => {

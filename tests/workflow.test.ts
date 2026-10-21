@@ -5,6 +5,7 @@ import { isPastCutoff, orderingState } from "@/lib/ordering";
 import { zonedNow } from "@/lib/time";
 import { defaultSettings } from "@/lib/data/settings";
 import { isVerifiedSale, summarize } from "@/lib/analytics";
+import { CART_VERSION, shouldSyncCartFromOtherTab } from "@/lib/store/cart";
 
 const order = (patch: Partial<Order>): Order => ({
   id: "1",
@@ -83,5 +84,14 @@ describe("sales numbers only count money collected", () => {
     expect(s.revenueCents).toBe(800);
     expect(s.pickupCount).toBe(2);
     expect(s.deliveryCount).toBe(1);
+  });
+});
+
+describe("cart sync between tabs", () => {
+  it("only syncs carts saved by the same version, so old and new tabs can't loop", () => {
+    expect(shouldSyncCartFromOtherTab(JSON.stringify({ state: { lines: [] }, version: CART_VERSION }))).toBe(true);
+    expect(shouldSyncCartFromOtherTab(JSON.stringify({ state: { lines: [] }, version: CART_VERSION - 1 }))).toBe(false);
+    expect(shouldSyncCartFromOtherTab(null)).toBe(false);
+    expect(shouldSyncCartFromOtherTab("not json")).toBe(false);
   });
 });

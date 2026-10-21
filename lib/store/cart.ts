@@ -28,6 +28,10 @@ function upsert(lines: CartLine[], productId: string, selections: Selections, qu
   return [...lines, { key, productId, selections, quantity }];
 }
 
+/** Bump when cart line format changes; older saved carts are cleared on load. */
+export const CART_STORAGE_KEY = "mteden-cart";
+export const CART_VERSION = 4;
+
 export const useCart = create<CartState>()(
   persist(
     (set) => ({
@@ -55,8 +59,8 @@ export const useCart = create<CartState>()(
       setOpen: (isOpen) => set({ isOpen }),
     }),
     {
-      name: "mteden-cart",
-      version: 4,
+      name: CART_STORAGE_KEY,
+      version: CART_VERSION,
       // v2–v4: sandwich, bagel, chips and coffee options changed. Old carts are cleared.
       migrate: () => ({ lines: [] }),
       storage: createJSONStorage(() => localStorage),
@@ -67,3 +71,17 @@ export const useCart = create<CartState>()(
 );
 
 export const selectCount = (s: CartState) => s.lines.reduce((n, l) => n + l.quantity, 0);
+
+/**
+ * Should this tab pick up a cart saved by another tab? Only if it was saved by
+ * the same version of the site. Otherwise an old tab (open across a deploy) and
+ * a new tab would keep clearing and re-saving each other's cart in a loop.
+ */
+export function shouldSyncCartFromOtherTab(newValue: string | null): boolean {
+  if (!newValue) return false;
+  try {
+    return (JSON.parse(newValue) as { version?: number }).version === CART_VERSION;
+  } catch {
+    return false;
+  }
+}

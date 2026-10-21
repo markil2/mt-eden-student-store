@@ -60,15 +60,19 @@ describe("menu rules (confirmed by the cafe)", () => {
     expect(catalog["hot-chocolate"].priceCents).toBe(300);
   });
 
-  it("hot coffee and cold brew offer free creamer and sugar packets", () => {
+  it("hot coffee and cold brew let customers pick 0–3 creamers and 0–3 sugar packets, free", () => {
     for (const id of ["hot-coffee", "cold-brew"]) {
       const coffee = catalog[id];
-      const addIns = coffee.optionGroups.find((g) => g.id === "add-ins")!;
-      expect(addIns.required).toBe(false);
-      expect(addIns.options.map((o) => o.label)).toEqual(["Creamer", "Sugar packets"]);
-      expect(unitPriceCents(coffee, { "add-ins": ["creamer", "sugar-packets"] })).toBe(coffee.priceCents);
+      const creamer = coffee.optionGroups.find((g) => g.id === "creamer")!;
+      const sugar = coffee.optionGroups.find((g) => g.id === "sugar")!;
+      expect([creamer.required, sugar.required]).toEqual([false, false]);
+      expect(creamer.options.map((o) => o.label)).toEqual(["1 creamer", "2 creamers", "3 creamers"]);
+      expect(sugar.options.map((o) => o.label)).toEqual(["1 sugar packet", "2 sugar packets", "3 sugar packets"]);
+      expect(missingRequiredGroup(coffee, emptySelections(coffee))).toBeNull();
+      expect(unitPriceCents(coffee, { creamer: ["2"], sugar: ["3"] })).toBe(coffee.priceCents);
+      expect(describeSelections(coffee, { creamer: ["2"], sugar: ["1"] })).toEqual(["2 creamers", "1 sugar packet"]);
     }
-    expect(combo.optionGroups.some((g) => g.id === "coffee-add-ins" && !g.required)).toBe(true);
+    expect(combo.optionGroups.filter((g) => g.id.startsWith("coffee-")).map((g) => g.required)).toEqual([false, false]);
   });
 
   it("hot chocolate is a combo drink choice", () => {

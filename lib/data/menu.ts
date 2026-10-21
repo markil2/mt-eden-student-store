@@ -100,18 +100,34 @@ const comboDrink: OptionGroup = {
   ],
 };
 
-/** Confirmed: free, optional creamer and sugar packets for hot coffee and cold brew. */
-const coffeeAddIns: OptionGroup = {
-  id: "add-ins",
-  label: "Add",
-  hint: "Free",
-  required: false,
-  max: 2,
-  options: [
-    { id: "creamer", label: "Creamer", priceDeltaCents: 0 },
-    { id: "sugar-packets", label: "Sugar packets", priceDeltaCents: 0 },
-  ],
-};
+/**
+ * Confirmed: free creamer and sugar packets for hot coffee and cold brew,
+ * up to 3 of each. Leaving a group unselected means none.
+ */
+function amountGroup(id: string, label: string, singular: string, plural: string, hint: string): OptionGroup {
+  return {
+    id,
+    label,
+    hint,
+    required: false,
+    max: 1,
+    options: [1, 2, 3].map((n) => ({
+      id: String(n),
+      label: `${n} ${n === 1 ? singular : plural}`,
+      priceDeltaCents: 0,
+    })),
+  };
+}
+
+const coffeeAddIns: OptionGroup[] = [
+  amountGroup("creamer", "Creamer", "creamer", "creamers", "Free · tap again to remove"),
+  amountGroup("sugar", "Sugar packets", "sugar packet", "sugar packets", "Free · tap again to remove"),
+];
+
+const comboCoffeeAddIns: OptionGroup[] = [
+  amountGroup("coffee-creamer", "Coffee creamer", "creamer", "creamers", "Free · only if you chose hot coffee"),
+  amountGroup("coffee-sugar", "Coffee sugar packets", "sugar packet", "sugar packets", "Free · only if you chose hot coffee"),
+];
 
 /* ── Products ──────────────────────────────────────────────────── */
 
@@ -129,7 +145,7 @@ export const products: Product[] = [
       protein,
       cheese,
       comboDrink,
-      { ...coffeeAddIns, id: "coffee-add-ins", label: "Coffee add-ins", hint: "Free · only if you chose hot coffee" },
+      ...comboCoffeeAddIns,
     ],
     popular: true,
   },
@@ -320,7 +336,7 @@ export const products: Product[] = [
     categoryId: "coffee",
     priceCents: 400,
     image: unsplash("1461023058943-07fcbe16d735", "Iced cold brew with cream swirling in"),
-    optionGroups: [coffeeAddIns],
+    optionGroups: coffeeAddIns,
     popular: true,
   },
   {
@@ -329,7 +345,7 @@ export const products: Product[] = [
     categoryId: "coffee",
     priceCents: 300,
     image: unsplash("1509042239860-f550ce710b93", "Two cups of coffee on a wooden table"),
-    optionGroups: [coffeeAddIns],
+    optionGroups: coffeeAddIns,
   },
   {
     id: "tea",

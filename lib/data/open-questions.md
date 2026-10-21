@@ -11,7 +11,7 @@ Phase 1 is built on the answers below. Menu data lives in `lib/data/menu.ts`, st
 - **Bagel with Cream Cheese**: $3, choose Plain, Everything or Cheese.
 - **Chips** ($2): Cheetos Puffs, Sour Cream & Onion, Ruffles or Doritos.
 - **Italian Soda** $5 (whipped cream optional, free). **Smoothie** $6. **Hot Chocolate** $3.
-- **Hot Coffee & Cold Brew**: optional Creamer and Sugar packets, free (also offered with the combo's coffee).
+- **Hot Coffee & Cold Brew**: Creamer and Sugar packets, none or 1–3 of each, free (also offered with the combo's coffee).
 - **Homepage photo**: the croissant breakfast sandwich (`public/photos/croissant-breakfast-sandwich.jpg`).
 - **Energy Drink** marked sold out (staff can restock it in Admin → Menu).
 - **Muffin**: $3. There's no "muffin of the day".

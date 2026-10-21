@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { ArrowRight, Clock } from "lucide-react";
 import { ButtonLink } from "@/components/ui/button";
-import { sampleImages } from "@/lib/data/menu";
+import { cafePhotos } from "@/lib/data/menu";
 import { useStoreData } from "@/lib/store/store-data";
 import { formatCutoff } from "@/lib/data/settings";
 import { useOrderingState } from "@/lib/use-ordering-state";
@@ -88,8 +88,8 @@ export function Hero() {
             transition={{ duration: 1.6, delay: 0.1, ease }}
           >
             <Image
-              src={sampleImages.hero.src}
-              alt={sampleImages.hero.alt}
+              src={cafePhotos.hero.src}
+              alt={cafePhotos.hero.alt}
               fill
               loading="eager"
               fetchPriority="high"

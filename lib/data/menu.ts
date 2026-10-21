@@ -19,6 +19,15 @@ const unsplash = (id: string, alt: string): ProductImage => ({
   isPlaceholder: true,
 });
 
+/** Real photos chosen by the cafe (served from /public/photos). */
+export const cafePhotos = {
+  hero: {
+    src: "/photos/croissant-breakfast-sandwich.jpg",
+    alt: "Croissant breakfast sandwich with scrambled egg on a white plate",
+    isPlaceholder: false,
+  } satisfies ProductImage,
+};
+
 export const sampleImages = {
   hero: unsplash("1565299507177-b0ac66763828", "Egg and cheese breakfast sandwich on a wooden board"),
   cafe: unsplash("1453614512568-c4024d13c247", "A warm cafe counter with espresso machine and shelves"),
@@ -91,6 +100,19 @@ const comboDrink: OptionGroup = {
   ],
 };
 
+/** Confirmed: free, optional creamer and sugar packets for hot coffee and cold brew. */
+const coffeeAddIns: OptionGroup = {
+  id: "add-ins",
+  label: "Add",
+  hint: "Free",
+  required: false,
+  max: 2,
+  options: [
+    { id: "creamer", label: "Creamer", priceDeltaCents: 0 },
+    { id: "sugar-packets", label: "Sugar packets", priceDeltaCents: 0 },
+  ],
+};
+
 /* ── Products ──────────────────────────────────────────────────── */
 
 export const products: Product[] = [
@@ -102,7 +124,13 @@ export const products: Product[] = [
     priceCents: 1000,
     description: "Egg with turkey, chicken sausage or bacon, plus OJ, coffee or a drink.",
     image: sampleImages.hero,
-    optionGroups: [sandwichBread, protein, cheese, comboDrink],
+    optionGroups: [
+      sandwichBread,
+      protein,
+      cheese,
+      comboDrink,
+      { ...coffeeAddIns, id: "coffee-add-ins", label: "Coffee add-ins", hint: "Free · only if you chose hot coffee" },
+    ],
     popular: true,
   },
   {
@@ -292,7 +320,7 @@ export const products: Product[] = [
     categoryId: "coffee",
     priceCents: 400,
     image: unsplash("1461023058943-07fcbe16d735", "Iced cold brew with cream swirling in"),
-    optionGroups: [],
+    optionGroups: [coffeeAddIns],
     popular: true,
   },
   {
@@ -301,7 +329,7 @@ export const products: Product[] = [
     categoryId: "coffee",
     priceCents: 300,
     image: unsplash("1509042239860-f550ce710b93", "Two cups of coffee on a wooden table"),
-    optionGroups: [],
+    optionGroups: [coffeeAddIns],
   },
   {
     id: "tea",

@@ -158,6 +158,11 @@ insert into public.options (group_id, key, label, price_delta_cents, linked_prod
   ('gatorade', 'Gatorade', 0, 'gatorade', 6),
   ('hot-chocolate', 'Hot chocolate', 0, 'hot-chocolate', 7)) as v(key, label, delta, linked, sort);
 with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, sort)
+  values ('sandwich-combo', 'coffee-add-ins', 'Coffee add-ins', 'Free · only if you chose hot coffee', false, 2, null, 0, 4) returning id)
+insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
+  ('creamer', 'Creamer', 0, null, 0),
+  ('sugar-packets', 'Sugar packets', 0, null, 1)) as v(key, label, delta, linked, sort);
+with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, sort)
   values ('sandwich-protein', 'bread', 'Bread', null, true, 1, null, 0, 0) returning id)
 insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
   ('bagel-plain', 'Plain bagel', 0, null, 0),
@@ -204,6 +209,16 @@ with g as (insert into public.option_groups (product_id, key, label, hint, requi
   values ('italian-soda', 'add', 'Add', null, false, 1, null, 0, 0) returning id)
 insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
   ('whipped-cream', 'Whipped cream', 0, null, 0)) as v(key, label, delta, linked, sort);
+with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, sort)
+  values ('cold-brew', 'add-ins', 'Add', 'Free', false, 2, null, 0, 0) returning id)
+insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
+  ('creamer', 'Creamer', 0, null, 0),
+  ('sugar-packets', 'Sugar packets', 0, null, 1)) as v(key, label, delta, linked, sort);
+with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, sort)
+  values ('hot-coffee', 'add-ins', 'Add', 'Free', false, 2, null, 0, 0) returning id)
+insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
+  ('creamer', 'Creamer', 0, null, 0),
+  ('sugar-packets', 'Sugar packets', 0, null, 1)) as v(key, label, delta, linked, sort);
 
 insert into public.product_availability (product_id, is_available) values ('sandwich-combo', true) on conflict (product_id) do nothing;
 insert into public.product_availability (product_id, is_available) values ('sandwich-protein', true) on conflict (product_id) do nothing;

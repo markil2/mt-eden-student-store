@@ -60,6 +60,17 @@ describe("menu rules (confirmed by the cafe)", () => {
     expect(catalog["hot-chocolate"].priceCents).toBe(300);
   });
 
+  it("hot coffee and cold brew offer free creamer and sugar packets", () => {
+    for (const id of ["hot-coffee", "cold-brew"]) {
+      const coffee = catalog[id];
+      const addIns = coffee.optionGroups.find((g) => g.id === "add-ins")!;
+      expect(addIns.required).toBe(false);
+      expect(addIns.options.map((o) => o.label)).toEqual(["Creamer", "Sugar packets"]);
+      expect(unitPriceCents(coffee, { "add-ins": ["creamer", "sugar-packets"] })).toBe(coffee.priceCents);
+    }
+    expect(combo.optionGroups.some((g) => g.id === "coffee-add-ins" && !g.required)).toBe(true);
+  });
+
   it("hot chocolate is a combo drink choice", () => {
     expect(combo.optionGroups.find((g) => g.id === "drink")!.options.some((o) => o.productId === "hot-chocolate")).toBe(true);
   });

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { products } from "@/lib/data/menu";
+import { categories, products } from "@/lib/data/menu";
 import { defaultAvailability } from "@/lib/data/availability";
 import { isAmountGroup } from "@/components/menu/option-group";
 import {
@@ -74,6 +74,18 @@ describe("menu rules (confirmed by the cafe)", () => {
       expect(describeSelections(coffee, { creamer: ["2"], sugar: ["1"] })).toEqual(["2 creamers", "1 sugar packet"]);
     }
     expect(combo.optionGroups.filter((g) => g.id.startsWith("coffee-")).map((g) => g.required)).toEqual([false, false]);
+  });
+
+  it("coffee, tea and hot chocolate share one section; Beverages keeps the cold drinks", () => {
+    expect(categories.find((c) => c.id === "coffee")!.name).toBe("Coffee, Tea & Hot Chocolate");
+    expect(products.filter((p) => p.categoryId === "coffee").map((p) => p.id)).toEqual([
+      "cold-brew",
+      "hot-coffee",
+      "tea",
+      "hot-chocolate",
+      "chai-latte",
+    ]);
+    expect(products.filter((p) => p.categoryId === "beverages").map((p) => p.id)).not.toContain("hot-chocolate");
   });
 
   it("tea requires a flavor, chosen from a dropdown of six", () => {

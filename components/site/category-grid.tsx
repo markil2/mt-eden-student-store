@@ -7,7 +7,7 @@ import type { CategoryId, ProductImage as ProductImageType } from "@/lib/types";
 
 const featured: { name: string; note: string; href: string; image: ProductImageType; categoryId: CategoryId }[] = [
   { name: "Breakfast", note: "Sandwiches, bagels & muffins", href: "/menu#breakfast", image: sampleImages.breakfast, categoryId: "breakfast" },
-  { name: "Coffee & Drinks", note: "Cold brew, juice & more", href: "/menu#coffee", image: sampleImages.coffee, categoryId: "coffee" },
+  { name: "Coffee & Drinks", note: "Cold brew, tea & hot chocolate", href: "/menu#coffee", image: sampleImages.coffee, categoryId: "coffee" },
   { name: "Snacks", note: "Chips, popcorn & bars", href: "/menu#snacks", image: sampleImages.snacks, categoryId: "snacks" },
   { name: "Parfaits & More", note: "Yogurt, berries & granola", href: "/menu#breakfast", image: sampleImages.parfait, categoryId: "breakfast" },
 ];

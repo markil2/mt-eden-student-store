@@ -10,7 +10,7 @@ export const categories: Category[] = [
   { id: "breakfast", name: "Breakfast", blurb: "Made to order every morning." },
   { id: "snacks", name: "Snacks", blurb: "Something to get you to lunch." },
   { id: "beverages", name: "Beverages", blurb: "Cold, fresh, and a little sweet." },
-  { id: "coffee", name: "Iced & Hot Coffee", blurb: "Your first-period fuel." },
+  { id: "coffee", name: "Coffee, Tea & Hot Chocolate", blurb: "Your first-period fuel." },
 ];
 
 const unsplash = (id: string, alt: string): ProductImage => ({
@@ -307,23 +307,6 @@ export const products: Product[] = [
     optionGroups: [],
   },
   {
-    id: "chai-latte",
-    name: "Chai Latte",
-    categoryId: "beverages",
-    // Listed as "OOS" on the printed menu — no price shown. Flagged for confirmation.
-    priceCents: 0,
-    image: unsplash("1517487881594-2787fef5ebf7", "A chai latte on a white tray"),
-    optionGroups: [],
-  },
-  {
-    id: "hot-chocolate",
-    name: "Hot Chocolate",
-    categoryId: "beverages",
-    priceCents: 300,
-    image: unsplash("1517578239113-b03992dcdd25", "A cup of hot chocolate on a saucer"),
-    optionGroups: [],
-  },
-  {
     id: "energy-drink",
     name: "Energy Drink",
     categoryId: "beverages",
@@ -349,7 +332,7 @@ export const products: Product[] = [
   },
   { id: "gatorade", name: "Gatorade", categoryId: "beverages", priceCents: 300, image: null, optionGroups: [] },
 
-  // Iced & Hot Coffee
+  // Coffee, Tea & Hot Chocolate
   {
     id: "cold-brew",
     name: "Cold Brew",
@@ -375,6 +358,23 @@ export const products: Product[] = [
     description: "Chamomile, Chai Spice, Peppermint, Earl Grey, Moroccan Mint or Lemon Ginger.",
     image: unsplash("1544787219-7f47ccb76574", "A cup of tea with cookies"),
     optionGroups: [{ id: "flavor", label: "Flavor", required: true, max: 1, display: "dropdown", options: teaFlavors }],
+  },
+  {
+    id: "hot-chocolate",
+    name: "Hot Chocolate",
+    categoryId: "coffee",
+    priceCents: 300,
+    image: unsplash("1517578239113-b03992dcdd25", "A cup of hot chocolate on a saucer"),
+    optionGroups: [],
+  },
+  {
+    id: "chai-latte",
+    name: "Chai Latte",
+    categoryId: "coffee",
+    // Listed as "OOS" on the printed menu — no price shown. Flagged for confirmation.
+    priceCents: 0,
+    image: unsplash("1517487881594-2787fef5ebf7", "A chai latte on a white tray"),
+    optionGroups: [],
   },
 ];
 

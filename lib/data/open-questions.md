@@ -13,6 +13,7 @@ Phase 1 is built on the answers below. Menu data lives in `lib/data/menu.ts`, st
 - **Italian Soda** $5 (whipped cream optional, free). **Smoothie** $6. **Hot Chocolate** $3.
 - **Hot Coffee & Cold Brew**: Creamer and Sugar packets, none or 1–3 of each, free (also offered with the combo's coffee).
 - **Tea** ($3): required flavor from a dropdown: Chamomile, Chai Spice, Peppermint, Double Bergamot Earl Grey, Moroccan Mint, Lemon Ginger. The combo offers the same dropdown (optional) when tea is the drink.
+- **Menu sections**: "Coffee, Tea & Hot Chocolate" (cold brew, hot coffee, tea, hot chocolate, chai latte); "Beverages" keeps the cold drinks.
 - **Homepage photo**: the croissant breakfast sandwich (`public/photos/croissant-breakfast-sandwich.jpg`).
 - **Energy Drink** marked sold out (staff can restock it in Admin → Menu).
 - **Muffin**: $3. There's no "muffin of the day".

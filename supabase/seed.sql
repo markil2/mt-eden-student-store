@@ -7,7 +7,7 @@ insert into public.categories (id, name, blurb, sort) values ('snacks', 'Snacks'
   on conflict (id) do update set name = excluded.name, blurb = excluded.blurb, sort = excluded.sort;
 insert into public.categories (id, name, blurb, sort) values ('beverages', 'Beverages', 'Cold, fresh, and a little sweet.', 2)
   on conflict (id) do update set name = excluded.name, blurb = excluded.blurb, sort = excluded.sort;
-insert into public.categories (id, name, blurb, sort) values ('coffee', 'Iced & Hot Coffee', 'Your first-period fuel.', 3)
+insert into public.categories (id, name, blurb, sort) values ('coffee', 'Coffee, Tea & Hot Chocolate', 'Your first-period fuel.', 3)
   on conflict (id) do update set name = excluded.name, blurb = excluded.blurb, sort = excluded.sort;
 
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
@@ -86,48 +86,48 @@ insert into public.products (id, category_id, name, description, price_cents, im
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('chai-latte', 'beverages', 'Chai Latte', null, 0, 'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?auto=format&fit=crop&w=1200&q=75', 'A chai latte on a white tray', true, false, 15)
+  values ('energy-drink', 'beverages', 'Energy Drink', null, 300, 'https://images.unsplash.com/photo-1625740822008-e45abf4e01d5?auto=format&fit=crop&w=1200&q=75', 'A drinks fridge stocked with cans', true, false, 15)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('hot-chocolate', 'beverages', 'Hot Chocolate', null, 300, 'https://images.unsplash.com/photo-1517578239113-b03992dcdd25?auto=format&fit=crop&w=1200&q=75', 'A cup of hot chocolate on a saucer', true, false, 16)
+  values ('italian-soda', 'beverages', 'Italian Soda', null, 500, 'https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=1200&q=75', 'Bright sodas with strawberries and lime', true, false, 16)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('energy-drink', 'beverages', 'Energy Drink', null, 300, 'https://images.unsplash.com/photo-1625740822008-e45abf4e01d5?auto=format&fit=crop&w=1200&q=75', 'A drinks fridge stocked with cans', true, false, 17)
+  values ('gatorade', 'beverages', 'Gatorade', null, 300, null, null, false, false, 17)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('italian-soda', 'beverages', 'Italian Soda', null, 500, 'https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=1200&q=75', 'Bright sodas with strawberries and lime', true, false, 18)
+  values ('cold-brew', 'coffee', 'Cold Brew', null, 400, 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=1200&q=75', 'Iced cold brew with cream swirling in', true, true, 18)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('gatorade', 'beverages', 'Gatorade', null, 300, null, null, false, false, 19)
+  values ('hot-coffee', 'coffee', 'Hot Coffee', null, 300, 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=75', 'Two cups of coffee on a wooden table', true, false, 19)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('cold-brew', 'coffee', 'Cold Brew', null, 400, 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=1200&q=75', 'Iced cold brew with cream swirling in', true, true, 20)
+  values ('tea', 'coffee', 'Tea', 'Chamomile, Chai Spice, Peppermint, Earl Grey, Moroccan Mint or Lemon Ginger.', 300, 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1200&q=75', 'A cup of tea with cookies', true, false, 20)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('hot-coffee', 'coffee', 'Hot Coffee', null, 300, 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=75', 'Two cups of coffee on a wooden table', true, false, 21)
+  values ('hot-chocolate', 'coffee', 'Hot Chocolate', null, 300, 'https://images.unsplash.com/photo-1517578239113-b03992dcdd25?auto=format&fit=crop&w=1200&q=75', 'A cup of hot chocolate on a saucer', true, false, 21)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('tea', 'coffee', 'Tea', 'Chamomile, Chai Spice, Peppermint, Earl Grey, Moroccan Mint or Lemon Ginger.', 300, 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1200&q=75', 'A cup of tea with cookies', true, false, 22)
+  values ('chai-latte', 'coffee', 'Chai Latte', null, 0, 'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?auto=format&fit=crop&w=1200&q=75', 'A chai latte on a white tray', true, false, 22)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 
 -- Rebuild option groups so removed options (e.g. biscuit) disappear.
-delete from public.option_groups where product_id in ('sandwich-combo', 'sandwich-protein', 'sandwich-egg-cheese', 'yogurt-parfait', 'bagel', 'muffin', 'chips', 'popcorn', 'pretzels', 'protein-bar', 'fruit-snacks', 'water', 'lemonade', 'orange-juice', 'smoothie', 'chai-latte', 'hot-chocolate', 'energy-drink', 'italian-soda', 'gatorade', 'cold-brew', 'hot-coffee', 'tea');
+delete from public.option_groups where product_id in ('sandwich-combo', 'sandwich-protein', 'sandwich-egg-cheese', 'yogurt-parfait', 'bagel', 'muffin', 'chips', 'popcorn', 'pretzels', 'protein-bar', 'fruit-snacks', 'water', 'lemonade', 'orange-juice', 'smoothie', 'energy-drink', 'italian-soda', 'gatorade', 'cold-brew', 'hot-coffee', 'tea', 'hot-chocolate', 'chai-latte');
 with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
   values ('sandwich-combo', 'bread', 'Bread', null, true, 1, null, 0, null, 0) returning id)
 insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
@@ -274,14 +274,14 @@ insert into public.product_availability (product_id, is_available) values ('wate
 insert into public.product_availability (product_id, is_available) values ('lemonade', true) on conflict (product_id) do nothing;
 insert into public.product_availability (product_id, is_available) values ('orange-juice', true) on conflict (product_id) do nothing;
 insert into public.product_availability (product_id, is_available) values ('smoothie', true) on conflict (product_id) do nothing;
-insert into public.product_availability (product_id, is_available) values ('chai-latte', false) on conflict (product_id) do nothing;
-insert into public.product_availability (product_id, is_available) values ('hot-chocolate', true) on conflict (product_id) do nothing;
 insert into public.product_availability (product_id, is_available) values ('energy-drink', false) on conflict (product_id) do nothing;
 insert into public.product_availability (product_id, is_available) values ('italian-soda', true) on conflict (product_id) do nothing;
 insert into public.product_availability (product_id, is_available) values ('gatorade', true) on conflict (product_id) do nothing;
 insert into public.product_availability (product_id, is_available) values ('cold-brew', true) on conflict (product_id) do nothing;
 insert into public.product_availability (product_id, is_available) values ('hot-coffee', true) on conflict (product_id) do nothing;
 insert into public.product_availability (product_id, is_available) values ('tea', true) on conflict (product_id) do nothing;
+insert into public.product_availability (product_id, is_available) values ('hot-chocolate', true) on conflict (product_id) do nothing;
+insert into public.product_availability (product_id, is_available) values ('chai-latte', false) on conflict (product_id) do nothing;
 
 insert into public.store_settings (id, ordering_paused, pause_message, order_cutoff, enforce_cutoff, timezone, pickup_enabled, pickup_location, delivery_enabled, delivery_fee_cents, require_room, hours, hours_note, contact)
   values (1, false, 'Online ordering is paused right now. Check back soon!', '08:00', true, 'America/Los_Angeles', true, 'Resting room, E Hall', true, 0, true,

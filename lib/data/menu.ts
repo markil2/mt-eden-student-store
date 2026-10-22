@@ -104,6 +104,16 @@ const comboDrink: OptionGroup = {
  * Confirmed: free creamer and sugar packets for hot coffee and cold brew,
  * up to 3 of each. Leaving a group unselected means none.
  */
+/** Confirmed tea flavors, chosen from a dropdown. */
+const teaFlavors: OptionGroup["options"] = [
+  { id: "chamomile", label: "Chamomile", priceDeltaCents: 0 },
+  { id: "chai-spice", label: "Chai Spice", priceDeltaCents: 0 },
+  { id: "peppermint", label: "Peppermint", priceDeltaCents: 0 },
+  { id: "double-bergamot-earl-grey", label: "Double Bergamot Earl Grey", priceDeltaCents: 0 },
+  { id: "moroccan-mint", label: "Moroccan Mint", priceDeltaCents: 0 },
+  { id: "lemon-ginger", label: "Lemon Ginger", priceDeltaCents: 0 },
+];
+
 function amountGroup(id: string, label: string, singular: string, plural: string, hint: string): OptionGroup {
   return {
     id,
@@ -111,6 +121,7 @@ function amountGroup(id: string, label: string, singular: string, plural: string
     hint,
     required: false,
     max: 1,
+    display: "stepper",
     options: [1, 2, 3].map((n) => ({
       id: String(n),
       label: `${n} ${n === 1 ? singular : plural}`,
@@ -145,6 +156,15 @@ export const products: Product[] = [
       protein,
       cheese,
       comboDrink,
+      {
+        id: "tea-flavor",
+        label: "Tea flavor",
+        hint: "Only if you chose tea",
+        required: false,
+        max: 1,
+        display: "dropdown",
+        options: teaFlavors,
+      },
       ...comboCoffeeAddIns,
     ],
     popular: true,
@@ -352,8 +372,9 @@ export const products: Product[] = [
     name: "Tea",
     categoryId: "coffee",
     priceCents: 300,
+    description: "Chamomile, Chai Spice, Peppermint, Earl Grey, Moroccan Mint or Lemon Ginger.",
     image: unsplash("1544787219-7f47ccb76574", "A cup of tea with cookies"),
-    optionGroups: [],
+    optionGroups: [{ id: "flavor", label: "Flavor", required: true, max: 1, display: "dropdown", options: teaFlavors }],
   },
 ];
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { Check } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 import type { Availability, OptionGroup as OptionGroupType } from "@/lib/types";
 import { cn, formatCents } from "@/lib/format";
 import { QuantityStepper } from "@/components/ui/quantity-stepper";
@@ -10,6 +10,7 @@ import { QuantityStepper } from "@/components/ui/quantity-stepper";
  * ids are 1, 2, 3… These show as a − / + stepper starting at 0 instead of chips.
  */
 export function isAmountGroup(group: OptionGroupType): boolean {
+  if (group.display) return group.display === "stepper";
   return (
     !group.required &&
     group.max === 1 &&
@@ -32,6 +33,11 @@ export function OptionGroupField({
   invalid?: boolean;
   onChange: (next: string[]) => void;
 }) {
+  if (group.display === "dropdown") {
+    return (
+      <DropdownField group={group} selected={selected} availability={availability} invalid={invalid} onChange={onChange} />
+    );
+  }
   if (isAmountGroup(group)) return <AmountField group={group} selected={selected} onChange={onChange} />;
 
   const single = group.max === 1 && group.required;
@@ -127,6 +133,75 @@ function AmountField({
         label={group.label}
         itemLabel={group.label.toLowerCase()}
       />
+    </div>
+  );
+}
+
+/** Long single-choice lists (e.g. tea flavors) as a native dropdown: uses the phone's own picker. */
+function DropdownField({
+  group,
+  selected,
+  availability,
+  invalid,
+  onChange,
+}: {
+  group: OptionGroupType;
+  selected: string[];
+  availability: Availability;
+  invalid: boolean;
+  onChange: (next: string[]) => void;
+}) {
+  const value = selected[0] ?? "";
+  const selectId = `select-${group.id}`;
+  return (
+    <div className="py-5">
+      <div className="flex w-full items-baseline justify-between gap-3">
+        <label id={`group-${group.id}`} htmlFor={selectId} className="font-semibold text-ink">
+          {group.label}
+        </label>
+        <span
+          className={cn(
+            "eyebrow text-[0.62rem]",
+            invalid ? "text-[#a3361f]" : group.required ? "text-navy" : "text-ink-muted",
+          )}
+        >
+          {invalid ? "Choose one" : group.required ? "Required" : "Optional"}
+        </span>
+      </div>
+      {group.hint && <p className="mt-1 text-sm text-ink-muted">{group.hint}</p>}
+      <div className="relative mt-3">
+        <select
+          id={selectId}
+          value={value}
+          onChange={(e) => onChange(e.target.value ? [e.target.value] : [])}
+          aria-invalid={invalid || undefined}
+          className={cn(
+            "h-12 w-full appearance-none rounded-xl border bg-white pr-11 pl-4 text-base outline-none transition-colors",
+            "focus:border-navy focus:ring-2 focus:ring-navy/15",
+            invalid ? "border-[#a3361f]" : "border-line",
+            value ? "text-ink" : "text-ink-muted",
+          )}
+        >
+          {group.required ? (
+            <option value="" disabled>
+              Choose a {group.label.toLowerCase()}
+            </option>
+          ) : (
+            <option value="">None</option>
+          )}
+          {group.options.map((option) => {
+            const soldOut = option.productId ? availability[option.productId] === false : false;
+            return (
+              <option key={option.id} value={option.id} disabled={soldOut}>
+                {option.label}
+                {option.priceDeltaCents > 0 ? ` (+${formatCents(option.priceDeltaCents)})` : ""}
+                {soldOut ? " (sold out)" : ""}
+              </option>
+            );
+          })}
+        </select>
+        <ChevronDown className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-navy" aria-hidden />
+      </div>
     </div>
   );
 }

@@ -34,6 +34,8 @@ export interface OptionGroup {
   includedCount?: number;
   /** Charge for each selection beyond `includedCount`, in cents (e.g. +$1 per extra protein). */
   extraEachCents?: number;
+  /** How the choice is shown. Default: buttons (or a stepper for 1/2/3 "how many" groups). */
+  display?: "buttons" | "dropdown" | "stepper";
   options: Option[];
 }
 

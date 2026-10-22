@@ -76,6 +76,25 @@ describe("menu rules (confirmed by the cafe)", () => {
     expect(combo.optionGroups.filter((g) => g.id.startsWith("coffee-")).map((g) => g.required)).toEqual([false, false]);
   });
 
+  it("tea requires a flavor, chosen from a dropdown of six", () => {
+    const tea = catalog.tea;
+    const flavor = tea.optionGroups.find((g) => g.id === "flavor")!;
+    expect(flavor.required).toBe(true);
+    expect(flavor.display).toBe("dropdown");
+    expect(flavor.options.map((o) => o.label)).toEqual([
+      "Chamomile",
+      "Chai Spice",
+      "Peppermint",
+      "Double Bergamot Earl Grey",
+      "Moroccan Mint",
+      "Lemon Ginger",
+    ]);
+    expect(missingRequiredGroup(tea, emptySelections(tea))).toBe("Flavor");
+    expect(unitPriceCents(tea, { flavor: ["moroccan-mint"] })).toBe(300);
+    const comboTea = combo.optionGroups.find((g) => g.id === "tea-flavor")!;
+    expect([comboTea.required, comboTea.display, comboTea.options.length]).toEqual([false, "dropdown", 6]);
+  });
+
   it("creamer and sugar show as − / + steppers; other choices stay as buttons", () => {
     const coffee = catalog["hot-coffee"];
     expect(coffee.optionGroups.map(isAmountGroup)).toEqual([true, true]);

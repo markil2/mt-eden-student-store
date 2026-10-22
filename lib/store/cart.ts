@@ -30,7 +30,7 @@ function upsert(lines: CartLine[], productId: string, selections: Selections, qu
 
 /** Bump when cart line format changes; older saved carts are cleared on load. */
 export const CART_STORAGE_KEY = "mteden-cart";
-export const CART_VERSION = 5;
+export const CART_VERSION = 6;
 
 export const useCart = create<CartState>()(
   persist(

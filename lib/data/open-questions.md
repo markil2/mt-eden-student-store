@@ -10,7 +10,7 @@ Phase 1 is built on the answers below. Menu data lives in `lib/data/menu.ts`, st
 - $10 combo drink: any drink priced $3 or less (OJ, hot coffee, tea, water, lemonade, energy drink, Gatorade, hot chocolate).
 - **Bagel with Cream Cheese**: $3, choose Plain, Everything or Cheese.
 - **Chips** ($2): Cheetos Puffs, Sour Cream & Onion, Ruffles or Doritos.
-- **Italian Soda** $5 (whipped cream optional, free). **Smoothie** $6. **Hot Chocolate** $3.
+- **Italian Soda** $5: required flavor from a dropdown (Raspberry, Vanilla, Peach, Strawberry); whipped cream optional, free. **Smoothie** $6. **Hot Chocolate** $3.
 - **Hot Coffee & Cold Brew**: Creamer and Sugar packets, none or 1–3 of each, free (also offered with the combo's coffee).
 - **Tea** ($3): required flavor from a dropdown: Chamomile, Chai Spice, Peppermint, Double Bergamot Earl Grey, Moroccan Mint, Lemon Ginger. The combo offers the same dropdown (optional) when tea is the drink.
 - **Menu sections**: "Coffee, Tea & Hot Chocolate" (cold brew, hot coffee, tea, hot chocolate, chai latte); "Beverages" keeps the cold drinks.
@@ -30,7 +30,7 @@ Phase 1 is built on the answers below. Menu data lives in `lib/data/menu.ts`, st
 
 ## Still open
 - **Chai Latte**: price when it's back in stock. It stays unorderable until a price is set.
-- **Flavors**: do smoothie, Italian soda, energy drink, Gatorade or protein bars have flavor choices? (Chips and tea are done.)
+- **Flavors**: do smoothie, energy drink, Gatorade or protein bars have flavor choices? (Chips, tea and Italian soda are done.)
 
 ## Before Phase 3 (payments)
 - School-approved payment processor and authorized account owner

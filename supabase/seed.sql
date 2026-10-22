@@ -91,7 +91,7 @@ insert into public.products (id, category_id, name, description, price_cents, im
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('italian-soda', 'beverages', 'Italian Soda', null, 500, 'https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=1200&q=75', 'Bright sodas with strawberries and lime', true, false, 16)
+  values ('italian-soda', 'beverages', 'Italian Soda', 'Raspberry, Vanilla, Peach or Strawberry. Whipped cream on request.', 500, 'https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=1200&q=75', 'Bright sodas with strawberries and lime', true, false, 16)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
@@ -222,7 +222,14 @@ insert into public.options (group_id, key, label, price_delta_cents, linked_prod
   ('ruffles', 'Ruffles', 0, null, 2),
   ('doritos', 'Doritos', 0, null, 3)) as v(key, label, delta, linked, sort);
 with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
-  values ('italian-soda', 'add', 'Add', null, false, 1, null, 0, null, 0) returning id)
+  values ('italian-soda', 'flavor', 'Flavor', null, true, 1, null, 0, 'dropdown', 0) returning id)
+insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
+  ('raspberry', 'Raspberry', 0, null, 0),
+  ('vanilla', 'Vanilla', 0, null, 1),
+  ('peach', 'Peach', 0, null, 2),
+  ('strawberry', 'Strawberry', 0, null, 3)) as v(key, label, delta, linked, sort);
+with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
+  values ('italian-soda', 'add', 'Add', null, false, 1, null, 0, null, 1) returning id)
 insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
   ('whipped-cream', 'Whipped cream', 0, null, 0)) as v(key, label, delta, linked, sort);
 with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)

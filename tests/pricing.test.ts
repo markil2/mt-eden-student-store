@@ -56,7 +56,7 @@ describe("menu rules (confirmed by the cafe)", () => {
   });
 
   it("drink prices: Italian soda $5 (free whipped cream), smoothie $6, hot chocolate $3", () => {
-    expect(unitPriceCents(catalog["italian-soda"], { add: ["whipped-cream"] })).toBe(500);
+    expect(unitPriceCents(catalog["italian-soda"], { flavor: ["peach"], add: ["whipped-cream"] })).toBe(500);
     expect(catalog.smoothie.priceCents).toBe(600);
     expect(catalog["hot-chocolate"].priceCents).toBe(300);
   });
@@ -86,6 +86,15 @@ describe("menu rules (confirmed by the cafe)", () => {
       "chai-latte",
     ]);
     expect(products.filter((p) => p.categoryId === "beverages").map((p) => p.id)).not.toContain("hot-chocolate");
+  });
+
+  it("Italian soda requires a flavor from a dropdown; whipped cream stays optional", () => {
+    const soda = catalog["italian-soda"];
+    const flavor = soda.optionGroups.find((g) => g.id === "flavor")!;
+    expect([flavor.required, flavor.display]).toEqual([true, "dropdown"]);
+    expect(flavor.options.map((o) => o.label)).toEqual(["Raspberry", "Vanilla", "Peach", "Strawberry"]);
+    expect(missingRequiredGroup(soda, emptySelections(soda))).toBe("Flavor");
+    expect(soda.optionGroups.find((g) => g.id === "add")!.required).toBe(false);
   });
 
   it("tea requires a flavor, chosen from a dropdown of six", () => {

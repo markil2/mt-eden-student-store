@@ -319,8 +319,23 @@ export const products: Product[] = [
     name: "Italian Soda",
     categoryId: "beverages",
     priceCents: 500,
+    description: "Raspberry, Vanilla, Peach or Strawberry. Whipped cream on request.",
     image: unsplash("1497534446932-c925b458314e", "Bright sodas with strawberries and lime"),
     optionGroups: [
+      // Confirmed: required flavor, chosen from a dropdown like the tea.
+      {
+        id: "flavor",
+        label: "Flavor",
+        required: true,
+        max: 1,
+        display: "dropdown",
+        options: [
+          { id: "raspberry", label: "Raspberry", priceDeltaCents: 0 },
+          { id: "vanilla", label: "Vanilla", priceDeltaCents: 0 },
+          { id: "peach", label: "Peach", priceDeltaCents: 0 },
+          { id: "strawberry", label: "Strawberry", priceDeltaCents: 0 },
+        ],
+      },
       {
         id: "add",
         label: "Add",

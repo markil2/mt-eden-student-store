@@ -15,7 +15,10 @@ export const localStoreData: PublicStoreData = {
   categories,
   products,
   availability: defaultAvailability,
+  manualAvailability: defaultAvailability,
   settings: defaultSettings,
+  ingredients: [],
+  ingredientUses: [],
 };
 
 /**

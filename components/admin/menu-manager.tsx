@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { ImagePlus, Pencil, Plus } from "lucide-react";
 import type { Product } from "@/lib/types";
 import { useStoreData } from "@/lib/store/store-data";
+import { isOut } from "@/lib/inventory";
 import { useStaff } from "@/lib/admin/staff-context";
 import { useCatalog } from "@/lib/use-catalog";
 import { getBrowserSupabase } from "@/lib/supabase/browser";
@@ -21,6 +22,18 @@ export function MenuManager() {
   const { products } = useCatalog();
   const categories = useStoreData((s) => s.categories);
   const availability = useStoreData((s) => s.availability);
+  const manualAvailability = useStoreData((s) => s.manualAvailability);
+  const ingredients = useStoreData((s) => s.ingredients);
+  const ingredientUses = useStoreData((s) => s.ingredientUses);
+  /** Names of out-of-stock ingredients blocking an item, and how many of its choices are out. */
+  const stockNote = (product: Product) => {
+    const outIds = new Set(ingredients.filter(isOut).map((i) => i.id));
+    const blocking = ingredientUses
+      .filter((u) => u.productId === product.id && !u.optionKey && outIds.has(u.ingredientId))
+      .map((u) => ingredients.find((i) => i.id === u.ingredientId)!.name);
+    const choicesOut = product.optionGroups.reduce((n, g) => n + g.options.filter((o) => o.soldOut).length, 0);
+    return { blocking: [...new Set(blocking)], choicesOut };
+  };
   const setAvailableLocal = useStoreData((s) => s.setAvailableLocal);
   const staff = useStaff();
   const isManager = staff.role === "manager";
@@ -64,6 +77,8 @@ export function MenuManager() {
               <ul className="mt-3 divide-y divide-line overflow-hidden rounded-2xl bg-white ring-1 ring-line">
                 {items.map((product) => {
                   const available = availability[product.id] !== false;
+                  const switchedOn = manualAvailability[product.id] !== false;
+                  const note = stockNote(product);
                   return (
                     <li key={product.id} className="flex items-center gap-4 px-4 py-3">
                       <ProductImage
@@ -80,6 +95,15 @@ export function MenuManager() {
                           {product.priceCents > 0 ? formatCents(product.priceCents) : "No price set"}
                           {product.optionGroups.length > 0 && " · Has options"}
                         </p>
+                        {(note.blocking.length > 0 || note.choicesOut > 0 || (switchedOn && !available)) && (
+                          <p className="mt-0.5 text-xs font-semibold text-[#a3361f]">
+                            {note.blocking.length > 0
+                              ? `Out: ${note.blocking.join(", ")}`
+                              : switchedOn && !available
+                                ? "No choices left in stock"
+                                : `${note.choicesOut} choice${note.choicesOut === 1 ? "" : "s"} out of stock`}
+                          </p>
+                        )}
                       </div>
                       {isManager && (
                         <button
@@ -95,7 +119,7 @@ export function MenuManager() {
                         <span className={cn("hidden w-16 text-right text-sm font-semibold sm:block", available ? "text-[#1f6b41]" : "text-ink-muted")}>
                           {available ? "In stock" : "Sold out"}
                         </span>
-                        <Switch checked={available} onCheckedChange={(on) => toggle(product, on)} label={`${product.name} available`} />
+                        <Switch checked={switchedOn} onCheckedChange={(on) => toggle(product, on)} label={`${product.name} available`} />
                       </label>
                     </li>
                   );

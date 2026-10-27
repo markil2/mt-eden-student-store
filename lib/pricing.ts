@@ -57,6 +57,7 @@ export function isLineAvailable(line: CartLine, availability: Availability, cata
   for (const group of product.optionGroups) {
     for (const optionId of line.selections[group.id] ?? []) {
       const option = group.options.find((o) => o.id === optionId);
+      if (option?.soldOut) return false;
       if (option?.productId && availability[option.productId] === false) return false;
     }
   }

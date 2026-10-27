@@ -3,7 +3,7 @@
 The website and online ordering system for Mt. Eden High School's cafe, run by Mt. Eden Entrepreneurship.
 
 - **Customers** browse the menu, customize breakfast sandwiches, and order for **store pickup** (resting room, E Hall) or **classroom delivery**, either before or after school. They pay **cash or Zelle** when they get their order. No account is needed, and every order gets a private status page.
-- **Staff** sign in at `/admin` to run incoming orders live (with a chime for new ones), mark items sold out, and record payments.
+- **Staff** sign in at `/admin` to run incoming orders live (with a chime for new ones), record payments, and keep **inventory** up to date: counted ingredients (bagels, croissants) go down automatically with each order, and when anything runs out the items or choices that need it are marked sold out.
 - **Managers** can also edit prices, photos, the menu, store settings and staff accounts, and view sales.
 
 ## Tech

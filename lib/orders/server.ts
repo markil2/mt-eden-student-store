@@ -4,6 +4,7 @@ import { createHash, createHmac } from "node:crypto";
 import type { CartLine, FulfillmentMethod, Order } from "@/lib/types";
 import { fetchPublicStoreData } from "@/lib/data/catalog-mapper";
 import { isLineAvailable, missingRequiredGroup, unitPriceCents } from "@/lib/pricing";
+import { findShortage, usageFor } from "@/lib/inventory";
 import { orderingState } from "@/lib/ordering";
 import { zonedNow } from "@/lib/time";
 import { getServiceSupabase } from "@/lib/supabase/server";
@@ -91,6 +92,13 @@ export async function placeOrder(raw: PlaceOrderInput): Promise<PlaceOrderResult
       const product = catalog[line?.productId];
       const selections = line?.selections && typeof line.selections === "object" ? line.selections : {};
       const safeLine = { ...line, selections };
+      // A specific choice ran out (e.g. no more everything bagels): say which one.
+      const outChoice = product?.optionGroups
+        .flatMap((g) => g.options.filter((o) => o.soldOut && (selections[g.id] ?? []).includes(o.id)))
+        .at(0);
+      if (product && outChoice && availability[product.id] !== false) {
+        throw new OrderRejected(`Sorry, "${outChoice.label}" just ran out for ${product.name}. Please pick another option.`);
+      }
       if (!product || !isLineAvailable(safeLine, availability, catalog)) {
         throw new OrderRejected(`${product?.name ?? "An item in your cart"} just sold out. Please remove it and try again.`);
       }
@@ -119,6 +127,22 @@ export async function placeOrder(raw: PlaceOrderInput): Promise<PlaceOrderResult
       };
     });
 
+    // ── Ingredients: make sure we have enough of everything counted ──
+    const usage = usageFor(
+      raw.lines.map((l) => ({ ...l, selections: l.selections ?? {}, quantity: Math.floor(Number(l.quantity)) })),
+      catalog,
+      store.ingredientUses,
+    );
+    const shortage = findShortage(usage, store.ingredients);
+    if (shortage) {
+      const left = shortage.ingredient.quantity ?? 0;
+      throw new OrderRejected(
+        left > 0
+          ? `Sorry, we only have ${left} left of "${shortage.ingredient.name}". Please lower the quantity or pick another option.`
+          : `Sorry, "${shortage.ingredient.name}" just ran out. Please pick another option.`,
+      );
+    }
+
     const subtotal = items.reduce((s, i) => s + i.unit_price_cents * i.quantity, 0);
     const fee = method === "delivery" ? settings.delivery.feeCents : 0;
     const token = linkTokenFor(idempotencyKey);
@@ -140,8 +164,14 @@ export async function placeOrder(raw: PlaceOrderInput): Promise<PlaceOrderResult
         // Customers pay cash or Zelle in person; the order starts unpaid (set by create_order).
       },
       p_items: items,
+      // The database takes counted ingredients atomically, so two people can't both get the last one.
+      p_usage: Object.fromEntries(usage),
     });
-    if (error) throw error;
+    if (error) {
+      const outOfStock = /out_of_stock:([^:]+)/.exec(error.message);
+      if (outOfStock) throw new OrderRejected(`Sorry, "${outOfStock[1]}" just ran out. Please pick another option.`);
+      throw error;
+    }
     const row = (Array.isArray(data) ? data[0] : data) as { out_number: number } | null;
     if (!row) throw new Error("create_order returned nothing");
 

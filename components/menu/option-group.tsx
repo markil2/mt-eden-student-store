@@ -62,7 +62,7 @@ export function OptionGroupField({
 
       <div className="mt-3 grid grid-cols-2 gap-2">
         {group.options.map((option) => {
-          const soldOut = option.productId ? availability[option.productId] === false : false;
+          const soldOut = Boolean(option.soldOut) || (option.productId ? availability[option.productId] === false : false);
           const checked = selected.includes(option.id);
           return (
             <label
@@ -190,7 +190,7 @@ function DropdownField({
             <option value="">None</option>
           )}
           {group.options.map((option) => {
-            const soldOut = option.productId ? availability[option.productId] === false : false;
+            const soldOut = Boolean(option.soldOut) || (option.productId ? availability[option.productId] === false : false);
             return (
               <option key={option.id} value={option.id} disabled={soldOut}>
                 {option.label}

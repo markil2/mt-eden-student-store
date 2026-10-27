@@ -307,3 +307,125 @@ export async function resetStaffPasswordAction(userId: string, password: string)
     if (error) throw error;
   });
 }
+
+/* ── Ingredient inventory ──────────────────────────────────────────── */
+
+/** Any staff: set how many of a counted ingredient are left (e.g. after a delivery). */
+export async function setIngredientQuantityAction(id: string, quantity: number): Promise<ActionResult> {
+  return run(async () => {
+    const { supabase } = await requireStaff("staff");
+    const qty = Math.floor(Number(quantity));
+    if (!(qty >= 0 && qty <= 9999)) throw new Error("Enter a count between 0 and 9999.");
+    const { error } = await supabase
+      .from("ingredients")
+      .update({ quantity: qty, updated_at: new Date().toISOString() })
+      .eq("id", id)
+      .eq("kind", "count");
+    if (error) throw error;
+    updateTag(STORE_DATA_TAG);
+  });
+}
+
+/** Any staff: flip an in-stock / out switch (fruit, granola…). */
+export async function setIngredientInStockAction(id: string, inStock: boolean): Promise<ActionResult> {
+  return run(async () => {
+    const { supabase } = await requireStaff("staff");
+    const { error } = await supabase
+      .from("ingredients")
+      .update({ in_stock: Boolean(inStock), updated_at: new Date().toISOString() })
+      .eq("id", id)
+      .eq("kind", "switch");
+    if (error) throw error;
+    updateTag(STORE_DATA_TAG);
+  });
+}
+
+export interface IngredientInput {
+  name: string;
+  kind: "count" | "switch";
+  quantity?: number;
+}
+
+function ingredientRow(input: IngredientInput) {
+  const name = text(input.name, 60);
+  if (!name) throw new Error("Give the ingredient a name.");
+  const kind = input.kind === "switch" ? "switch" : "count";
+  const qty = Math.floor(Number(input.quantity ?? 0));
+  if (kind === "count" && !(qty >= 0 && qty <= 9999)) throw new Error("Enter a count between 0 and 9999.");
+  return { name, kind, quantity: kind === "count" ? qty : null, updated_at: new Date().toISOString() };
+}
+
+const friendlyDuplicate = (err: unknown) =>
+  err && typeof err === "object" && "code" in err && (err as { code: string }).code === "23505"
+    ? new Error("There's already an ingredient with that name.")
+    : err;
+
+/** Managers: add an ingredient. Returns its id. */
+export async function createIngredientAction(input: IngredientInput): Promise<ActionResult> {
+  return run(async () => {
+    const { supabase } = await requireStaff("manager");
+    const { data: last } = await supabase.from("ingredients").select("sort").order("sort", { ascending: false }).limit(1);
+    const { data, error } = await supabase
+      .from("ingredients")
+      .insert({ ...ingredientRow(input), in_stock: true, sort: (last?.[0]?.sort ?? 0) + 1 })
+      .select("id")
+      .single();
+    if (error) throw friendlyDuplicate(error);
+    updateTag(STORE_DATA_TAG);
+    return data.id as string;
+  });
+}
+
+/** Managers: rename an ingredient or switch it between counted and in-stock. */
+export async function updateIngredientAction(id: string, input: IngredientInput): Promise<ActionResult> {
+  return run(async () => {
+    const { supabase } = await requireStaff("manager");
+    const row = ingredientRow(input);
+    const { data: current } = await supabase.from("ingredients").select("kind").eq("id", id).single();
+    // Renaming must not overwrite a live count (orders keep changing it).
+    const update =
+      current?.kind === row.kind
+        ? { name: row.name, updated_at: row.updated_at }
+        : { ...row, in_stock: true };
+    const { error } = await supabase.from("ingredients").update(update).eq("id", id);
+    if (error) throw friendlyDuplicate(error);
+    updateTag(STORE_DATA_TAG);
+  });
+}
+
+export async function deleteIngredientAction(id: string): Promise<ActionResult> {
+  return run(async () => {
+    const { supabase } = await requireStaff("manager");
+    const { error } = await supabase.from("ingredients").delete().eq("id", id);
+    if (error) throw error;
+    updateTag(STORE_DATA_TAG);
+  });
+}
+
+/**
+ * Managers: choose which items (whole item) or choices (e.g. "Everything bagel"
+ * on a sandwich) need this ingredient. Replaces the previous links.
+ */
+export async function setIngredientUsesAction(
+  id: string,
+  uses: { productId: string; groupKey: string | null; optionKey: string | null }[],
+): Promise<ActionResult> {
+  return run(async () => {
+    const { supabase } = await requireStaff("manager");
+    if (!Array.isArray(uses) || uses.length > 300) throw new Error("Too many links.");
+    const rows = uses.map((u) => ({
+      ingredient_id: id,
+      product_id: text(u.productId, 60),
+      group_key: u.groupKey && u.optionKey ? text(u.groupKey, 60) : null,
+      option_key: u.groupKey && u.optionKey ? text(u.optionKey, 60) : null,
+      amount: 1,
+    }));
+    const { error: deleteError } = await supabase.from("ingredient_uses").delete().eq("ingredient_id", id);
+    if (deleteError) throw deleteError;
+    if (rows.length) {
+      const { error } = await supabase.from("ingredient_uses").insert(rows);
+      if (error) throw error;
+    }
+    updateTag(STORE_DATA_TAG);
+  });
+}

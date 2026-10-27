@@ -8,7 +8,14 @@ import { useStoreData } from "@/lib/store/store-data";
 import { fetchPublicStoreData, type PublicStoreData } from "@/lib/data/catalog-mapper";
 import { getBrowserSupabase } from "@/lib/supabase/browser";
 
-const LIVE_TABLES = ["products", "product_availability", "store_settings", "fulfillment_windows"];
+const LIVE_TABLES = [
+  "products",
+  "product_availability",
+  "store_settings",
+  "fulfillment_windows",
+  "ingredients",
+  "ingredient_uses",
+];
 
 export function Providers({ initialData, children }: { initialData: PublicStoreData; children: React.ReactNode }) {
   // Seed the store with server data before the first render so the menu is in the HTML.

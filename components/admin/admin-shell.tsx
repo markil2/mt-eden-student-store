@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Suspense } from "react";
-import { BarChart3, ExternalLink, LayoutGrid, LogOut, ReceiptText, Settings2, Users, UtensilsCrossed } from "lucide-react";
+import { BarChart3, Boxes, ExternalLink, LayoutGrid, LogOut, ReceiptText, Settings2, Users, UtensilsCrossed } from "lucide-react";
 import type { StaffMember } from "@/lib/types";
 import { StaffProvider, useStaff } from "@/lib/admin/staff-context";
 import { useAdminOrders, useAdminOrdersSync } from "@/lib/admin/orders-store";
@@ -16,6 +16,7 @@ const nav = [
   { href: "/admin", label: "Overview", icon: LayoutGrid, managerOnly: false },
   { href: "/admin/orders", label: "Orders", icon: ReceiptText, managerOnly: false },
   { href: "/admin/menu", label: "Menu", icon: UtensilsCrossed, managerOnly: false },
+  { href: "/admin/inventory", label: "Inventory", icon: Boxes, managerOnly: false },
   { href: "/admin/settings", label: "Settings", icon: Settings2, managerOnly: true },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3, managerOnly: true },
   { href: "/admin/staff", label: "Staff", icon: Users, managerOnly: true },

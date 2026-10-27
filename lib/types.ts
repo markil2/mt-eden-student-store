@@ -21,6 +21,8 @@ export interface Option {
   priceDeltaCents: number;
   /** Links an option to a product so its availability applies (e.g. combo drink). */
   productId?: string;
+  /** Set when an ingredient this choice needs has run out (see lib/inventory.ts). */
+  soldOut?: boolean;
 }
 
 export interface OptionGroup {

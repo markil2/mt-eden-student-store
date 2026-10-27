@@ -1,5 +1,6 @@
 import type { Availability, Category, FulfillmentWindow, Product, StoreSettings } from "@/lib/types";
 import { defaultSettings } from "./settings";
+import { applyInventory, type Ingredient, type IngredientUse } from "@/lib/inventory";
 
 /**
  * Turns Supabase rows into the app's types. Shared by the server (initial render)
@@ -8,9 +9,46 @@ import { defaultSettings } from "./settings";
 
 export interface PublicStoreData {
   categories: Category[];
+  /** Menu with ingredient shortages applied (choices marked `soldOut`). */
   products: Product[];
+  /** Effective availability: staff's switch AND ingredients. */
   availability: Availability;
+  /** Staff's per-item "In stock / Sold out" switch only. */
+  manualAvailability: Availability;
   settings: StoreSettings;
+  ingredients: Ingredient[];
+  ingredientUses: IngredientUse[];
+}
+
+export interface IngredientRow {
+  id: string;
+  name: string;
+  kind: "count" | "switch";
+  quantity: number | null;
+  in_stock: boolean;
+  sort: number;
+}
+
+export interface IngredientUseRow {
+  ingredient_id: string;
+  product_id: string;
+  group_key: string | null;
+  option_key: string | null;
+  amount: number;
+}
+
+export function mapIngredient(row: IngredientRow): Ingredient {
+  return { id: row.id, name: row.name, kind: row.kind, quantity: row.quantity, inStock: row.in_stock };
+}
+
+export function mapIngredientUse(row: IngredientUseRow): IngredientUse {
+  return {
+    ingredientId: row.ingredient_id,
+    productId: row.product_id,
+    groupKey: row.group_key,
+    optionKey: row.option_key,
+    amount: row.amount,
+  };
 }
 
 export interface CategoryRow {
@@ -163,20 +201,30 @@ export async function fetchPublicStoreData(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   supabase: { from: (table: string) => any },
 ): Promise<PublicStoreData> {
-  const [cats, prods, avail, settings, windows] = await Promise.all([
+  const [cats, prods, avail, settings, windows, ings, uses] = await Promise.all([
     supabase.from("categories").select("id, name, blurb, sort"),
     supabase.from("products").select(PRODUCT_SELECT).eq("archived", false).order("sort"),
     supabase.from("product_availability").select("product_id, is_available"),
     supabase.from("store_settings").select("*").eq("id", 1).maybeSingle(),
     supabase.from("fulfillment_windows").select("*"),
+    supabase.from("ingredients").select("id, name, kind, quantity, in_stock, sort").order("sort").order("name"),
+    supabase.from("ingredient_uses").select("ingredient_id, product_id, group_key, option_key, amount"),
   ]);
-  const error = cats.error ?? prods.error ?? avail.error ?? settings.error ?? windows.error;
+  const error = cats.error ?? prods.error ?? avail.error ?? settings.error ?? windows.error ?? ings.error ?? uses.error;
   if (error) throw new Error(`Couldn't load the menu: ${error.message}`);
+
+  const manualAvailability = mapAvailability(avail.data as { product_id: string; is_available: boolean }[]);
+  const ingredients = (ings.data as IngredientRow[]).map(mapIngredient);
+  const ingredientUses = (uses.data as IngredientUseRow[]).map(mapIngredientUse);
+  const applied = applyInventory((prods.data as ProductRow[]).map(mapProduct), manualAvailability, ingredients, ingredientUses);
 
   return {
     categories: mapCategories(cats.data as CategoryRow[]),
-    products: (prods.data as ProductRow[]).map(mapProduct),
-    availability: mapAvailability(avail.data as { product_id: string; is_available: boolean }[]),
+    products: applied.products,
+    availability: applied.availability,
+    manualAvailability,
     settings: mapSettings(settings.data as SettingsRow | null, windows.data as WindowRow[]),
+    ingredients,
+    ingredientUses,
   };
 }

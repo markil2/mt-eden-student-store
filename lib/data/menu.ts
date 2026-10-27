@@ -44,13 +44,24 @@ const sandwichBread: OptionGroup = {
   label: "Bread",
   required: true,
   max: 1,
-  // Confirmed: three bagel types or a croissant. No biscuit.
+  // Confirmed: four bagel types or a croissant. No biscuit.
   options: [
     { id: "bagel-plain", label: "Plain bagel", priceDeltaCents: 0 },
     { id: "bagel-everything", label: "Everything bagel", priceDeltaCents: 0 },
     { id: "bagel-cheese", label: "Cheese bagel", priceDeltaCents: 0 },
+    { id: "bagel-lox", label: "Lox bagel", priceDeltaCents: 0 },
     { id: "croissant", label: "Croissant", priceDeltaCents: 0 },
   ],
+};
+
+/** Confirmed: free, optional mayo on every breakfast sandwich. */
+const mayo: OptionGroup = {
+  id: "mayo",
+  label: "Add",
+  hint: "Free",
+  required: false,
+  max: 1,
+  options: [{ id: "mayonnaise", label: "Mayonnaise", priceDeltaCents: 0 }],
 };
 
 /** Confirmed: cheese is optional. */
@@ -155,6 +166,7 @@ export const products: Product[] = [
       sandwichBread,
       protein,
       cheese,
+      mayo,
       comboDrink,
       {
         id: "tea-flavor",
@@ -176,7 +188,7 @@ export const products: Product[] = [
     priceCents: 800,
     description: "Egg with turkey, chicken sausage or bacon. Extra proteins $1 each.",
     image: unsplash("1533089860892-a7c6f0a88666", "Fried egg with bacon on toasted bread"),
-    optionGroups: [sandwichBread, protein, cheese],
+    optionGroups: [sandwichBread, protein, cheese, mayo],
     popular: true,
   },
   {
@@ -186,7 +198,25 @@ export const products: Product[] = [
     priceCents: 600,
     description: "Egg on a bagel or croissant, with cheese if you like.",
     image: unsplash("1608039829572-78524f79c4c7", "Egg on a toasted English muffin"),
-    optionGroups: [sandwichBread, cheese],
+    optionGroups: [sandwichBread, cheese, mayo],
+  },
+  {
+    id: "smoked-salmon-bagel",
+    name: "Smoked Salmon Bagel",
+    categoryId: "breakfast",
+    priceCents: 800,
+    description: "Smoked salmon and cream cheese on your choice of bagel.",
+    image: null,
+    optionGroups: [
+      {
+        id: "bagel",
+        label: "Bagel",
+        required: true,
+        max: 1,
+        options: sandwichBread.options.filter((o) => o.id.startsWith("bagel-")),
+      },
+      mayo,
+    ],
   },
   {
     id: "yogurt-parfait",

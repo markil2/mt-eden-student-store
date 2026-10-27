@@ -26,115 +26,121 @@ insert into public.products (id, category_id, name, description, price_cents, im
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('yogurt-parfait', 'breakfast', 'Yogurt Parfait', 'Yogurt layered with berries, granola and honey.', 700, 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1200&q=75', 'Yogurt cups topped with strawberries', true, true, 3)
+  values ('smoked-salmon-bagel', 'breakfast', 'Smoked Salmon Bagel', 'Smoked salmon and cream cheese on your choice of bagel.', 800, null, null, false, false, 3)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('bagel', 'breakfast', 'Bagel with Cream Cheese', 'Plain, everything or cheese bagel with cream cheese.', 300, 'https://images.unsplash.com/photo-1585445490387-f47934b73b54?auto=format&fit=crop&w=1200&q=75', 'Bagels on a cooling rack', true, false, 4)
+  values ('yogurt-parfait', 'breakfast', 'Yogurt Parfait', 'Yogurt layered with berries, granola and honey.', 700, 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=1200&q=75', 'Yogurt cups topped with strawberries', true, true, 4)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('muffin', 'breakfast', 'Muffin', null, 300, 'https://images.unsplash.com/photo-1607958996333-41aef7caefaa?auto=format&fit=crop&w=1200&q=75', 'Blueberry muffins on a plate', true, false, 5)
+  values ('bagel', 'breakfast', 'Bagel with Cream Cheese', 'Plain, everything or cheese bagel with cream cheese.', 300, 'https://images.unsplash.com/photo-1585445490387-f47934b73b54?auto=format&fit=crop&w=1200&q=75', 'Bagels on a cooling rack', true, false, 5)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('chips', 'snacks', 'Chips', 'Cheetos Puffs, Sour Cream & Onion, Ruffles or Doritos.', 200, 'https://images.unsplash.com/photo-1621447504864-d8686e12698c?auto=format&fit=crop&w=1200&q=75', 'An open bag of potato chips', true, false, 6)
+  values ('muffin', 'breakfast', 'Muffin', null, 300, 'https://images.unsplash.com/photo-1607958996333-41aef7caefaa?auto=format&fit=crop&w=1200&q=75', 'Blueberry muffins on a plate', true, false, 6)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('popcorn', 'snacks', 'Popcorn', null, 200, 'https://images.unsplash.com/photo-1505686994434-e3cc5abf1330?auto=format&fit=crop&w=1200&q=75', 'A glass bowl of popcorn', true, false, 7)
+  values ('chips', 'snacks', 'Chips', 'Cheetos Puffs, Sour Cream & Onion, Ruffles or Doritos.', 200, 'https://images.unsplash.com/photo-1621447504864-d8686e12698c?auto=format&fit=crop&w=1200&q=75', 'An open bag of potato chips', true, false, 7)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('pretzels', 'snacks', 'Pretzels', null, 100, null, null, false, false, 8)
+  values ('popcorn', 'snacks', 'Popcorn', null, 200, 'https://images.unsplash.com/photo-1505686994434-e3cc5abf1330?auto=format&fit=crop&w=1200&q=75', 'A glass bowl of popcorn', true, false, 8)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('protein-bar', 'snacks', 'Protein Bar', null, 300, null, null, false, false, 9)
+  values ('pretzels', 'snacks', 'Pretzels', null, 100, null, null, false, false, 9)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('fruit-snacks', 'snacks', 'Fruit Snacks', 'Two bags.', 100, 'https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&w=1200&q=75', 'Colorful gummy bears', true, false, 10)
+  values ('protein-bar', 'snacks', 'Protein Bar', null, 300, null, null, false, false, 10)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('water', 'beverages', 'Water', null, 100, 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1200&q=75', 'A glass of water with lime and mint', true, false, 11)
+  values ('fruit-snacks', 'snacks', 'Fruit Snacks', 'Two bags.', 100, 'https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&w=1200&q=75', 'Colorful gummy bears', true, false, 11)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('lemonade', 'beverages', 'Lemonade', null, 300, 'https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=1200&q=75', 'Lemonade with lemon slices and mint', true, false, 12)
+  values ('water', 'beverages', 'Water', null, 100, 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1200&q=75', 'A glass of water with lime and mint', true, false, 12)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('orange-juice', 'beverages', 'Orange Juice', null, 300, 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=1200&q=75', 'A tall glass of orange juice', true, true, 13)
+  values ('lemonade', 'beverages', 'Lemonade', null, 300, 'https://images.unsplash.com/photo-1621263764928-df1444c5e859?auto=format&fit=crop&w=1200&q=75', 'Lemonade with lemon slices and mint', true, false, 13)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('smoothie', 'beverages', 'Smoothie', null, 600, 'https://images.unsplash.com/photo-1600718374662-0483d2b9da44?auto=format&fit=crop&w=1200&q=75', 'A berry smoothie with falling berries', true, false, 14)
+  values ('orange-juice', 'beverages', 'Orange Juice', null, 300, 'https://images.unsplash.com/photo-1600271886742-f049cd451bba?auto=format&fit=crop&w=1200&q=75', 'A tall glass of orange juice', true, true, 14)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('energy-drink', 'beverages', 'Energy Drink', null, 300, 'https://images.unsplash.com/photo-1625740822008-e45abf4e01d5?auto=format&fit=crop&w=1200&q=75', 'A drinks fridge stocked with cans', true, false, 15)
+  values ('smoothie', 'beverages', 'Smoothie', null, 600, 'https://images.unsplash.com/photo-1600718374662-0483d2b9da44?auto=format&fit=crop&w=1200&q=75', 'A berry smoothie with falling berries', true, false, 15)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('italian-soda', 'beverages', 'Italian Soda', 'Raspberry, Vanilla, Peach or Strawberry. Whipped cream on request.', 500, 'https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=1200&q=75', 'Bright sodas with strawberries and lime', true, false, 16)
+  values ('energy-drink', 'beverages', 'Energy Drink', null, 300, 'https://images.unsplash.com/photo-1625740822008-e45abf4e01d5?auto=format&fit=crop&w=1200&q=75', 'A drinks fridge stocked with cans', true, false, 16)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('gatorade', 'beverages', 'Gatorade', null, 300, null, null, false, false, 17)
+  values ('italian-soda', 'beverages', 'Italian Soda', 'Raspberry, Vanilla, Peach or Strawberry. Whipped cream on request.', 500, 'https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=1200&q=75', 'Bright sodas with strawberries and lime', true, false, 17)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('cold-brew', 'coffee', 'Cold Brew', null, 400, 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=1200&q=75', 'Iced cold brew with cream swirling in', true, true, 18)
+  values ('gatorade', 'beverages', 'Gatorade', null, 300, null, null, false, false, 18)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('hot-coffee', 'coffee', 'Hot Coffee', null, 300, 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=75', 'Two cups of coffee on a wooden table', true, false, 19)
+  values ('cold-brew', 'coffee', 'Cold Brew', null, 400, 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=1200&q=75', 'Iced cold brew with cream swirling in', true, true, 19)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('tea', 'coffee', 'Tea', 'Chamomile, Chai Spice, Peppermint, Earl Grey, Moroccan Mint or Lemon Ginger.', 300, 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1200&q=75', 'A cup of tea with cookies', true, false, 20)
+  values ('hot-coffee', 'coffee', 'Hot Coffee', null, 300, 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=75', 'Two cups of coffee on a wooden table', true, false, 20)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('hot-chocolate', 'coffee', 'Hot Chocolate', null, 300, 'https://images.unsplash.com/photo-1517578239113-b03992dcdd25?auto=format&fit=crop&w=1200&q=75', 'A cup of hot chocolate on a saucer', true, false, 21)
+  values ('tea', 'coffee', 'Tea', 'Chamomile, Chai Spice, Peppermint, Earl Grey, Moroccan Mint or Lemon Ginger.', 300, 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1200&q=75', 'A cup of tea with cookies', true, false, 21)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
-  values ('chai-latte', 'coffee', 'Chai Latte', null, 0, 'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?auto=format&fit=crop&w=1200&q=75', 'A chai latte on a white tray', true, false, 22)
+  values ('hot-chocolate', 'coffee', 'Hot Chocolate', null, 300, 'https://images.unsplash.com/photo-1517578239113-b03992dcdd25?auto=format&fit=crop&w=1200&q=75', 'A cup of hot chocolate on a saucer', true, false, 22)
+  on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
+    price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
+    image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
+insert into public.products (id, category_id, name, description, price_cents, image_url, image_alt, image_is_placeholder, popular, sort)
+  values ('chai-latte', 'coffee', 'Chai Latte', null, 0, 'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?auto=format&fit=crop&w=1200&q=75', 'A chai latte on a white tray', true, false, 23)
   on conflict (id) do update set category_id = excluded.category_id, name = excluded.name, description = excluded.description,
     price_cents = excluded.price_cents, image_url = excluded.image_url, image_alt = excluded.image_alt,
     image_is_placeholder = excluded.image_is_placeholder, popular = excluded.popular, sort = excluded.sort, archived = false;
 
 -- Rebuild option groups so removed options (e.g. biscuit) disappear.
-delete from public.option_groups where product_id in ('sandwich-combo', 'sandwich-protein', 'sandwich-egg-cheese', 'yogurt-parfait', 'bagel', 'muffin', 'chips', 'popcorn', 'pretzels', 'protein-bar', 'fruit-snacks', 'water', 'lemonade', 'orange-juice', 'smoothie', 'energy-drink', 'italian-soda', 'gatorade', 'cold-brew', 'hot-coffee', 'tea', 'hot-chocolate', 'chai-latte');
+delete from public.option_groups where product_id in ('sandwich-combo', 'sandwich-protein', 'sandwich-egg-cheese', 'smoked-salmon-bagel', 'yogurt-parfait', 'bagel', 'muffin', 'chips', 'popcorn', 'pretzels', 'protein-bar', 'fruit-snacks', 'water', 'lemonade', 'orange-juice', 'smoothie', 'energy-drink', 'italian-soda', 'gatorade', 'cold-brew', 'hot-coffee', 'tea', 'hot-chocolate', 'chai-latte');
 with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
   values ('sandwich-combo', 'bread', 'Bread', null, true, 1, null, 0, null, 0) returning id)
 insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
   ('bagel-plain', 'Plain bagel', 0, null, 0),
   ('bagel-everything', 'Everything bagel', 0, null, 1),
   ('bagel-cheese', 'Cheese bagel', 0, null, 2),
-  ('croissant', 'Croissant', 0, null, 3)) as v(key, label, delta, linked, sort);
+  ('bagel-lox', 'Lox bagel', 0, null, 3),
+  ('croissant', 'Croissant', 0, null, 4)) as v(key, label, delta, linked, sort);
 with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
   values ('sandwich-combo', 'protein', 'Protein', 'First protein included · +$1 each extra', true, 3, 1, 100, null, 1) returning id)
 insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
@@ -147,7 +153,11 @@ insert into public.options (group_id, key, label, price_delta_cents, linked_prod
   ('cheddar', 'Cheddar', 0, null, 0),
   ('provolone', 'Provolone', 0, null, 1)) as v(key, label, delta, linked, sort);
 with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
-  values ('sandwich-combo', 'drink', 'Drink', 'Included with the combo', true, 1, null, 0, null, 3) returning id)
+  values ('sandwich-combo', 'mayo', 'Add', 'Free', false, 1, null, 0, null, 3) returning id)
+insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
+  ('mayonnaise', 'Mayonnaise', 0, null, 0)) as v(key, label, delta, linked, sort);
+with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
+  values ('sandwich-combo', 'drink', 'Drink', 'Included with the combo', true, 1, null, 0, null, 4) returning id)
 insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
   ('orange-juice', 'Orange juice', 0, 'orange-juice', 0),
   ('hot-coffee', 'Hot coffee', 0, 'hot-coffee', 1),
@@ -158,7 +168,7 @@ insert into public.options (group_id, key, label, price_delta_cents, linked_prod
   ('gatorade', 'Gatorade', 0, 'gatorade', 6),
   ('hot-chocolate', 'Hot chocolate', 0, 'hot-chocolate', 7)) as v(key, label, delta, linked, sort);
 with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
-  values ('sandwich-combo', 'tea-flavor', 'Tea flavor', 'Only if you chose tea', false, 1, null, 0, 'dropdown', 4) returning id)
+  values ('sandwich-combo', 'tea-flavor', 'Tea flavor', 'Only if you chose tea', false, 1, null, 0, 'dropdown', 5) returning id)
 insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
   ('chamomile', 'Chamomile', 0, null, 0),
   ('chai-spice', 'Chai Spice', 0, null, 1),
@@ -167,13 +177,13 @@ insert into public.options (group_id, key, label, price_delta_cents, linked_prod
   ('moroccan-mint', 'Moroccan Mint', 0, null, 4),
   ('lemon-ginger', 'Lemon Ginger', 0, null, 5)) as v(key, label, delta, linked, sort);
 with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
-  values ('sandwich-combo', 'coffee-creamer', 'Coffee creamer', 'Free · only if you chose hot coffee', false, 1, null, 0, 'stepper', 5) returning id)
+  values ('sandwich-combo', 'coffee-creamer', 'Coffee creamer', 'Free · only if you chose hot coffee', false, 1, null, 0, 'stepper', 6) returning id)
 insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
   ('1', '1 creamer', 0, null, 0),
   ('2', '2 creamers', 0, null, 1),
   ('3', '3 creamers', 0, null, 2)) as v(key, label, delta, linked, sort);
 with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
-  values ('sandwich-combo', 'coffee-sugar', 'Coffee sugar packets', 'Free · only if you chose hot coffee', false, 1, null, 0, 'stepper', 6) returning id)
+  values ('sandwich-combo', 'coffee-sugar', 'Coffee sugar packets', 'Free · only if you chose hot coffee', false, 1, null, 0, 'stepper', 7) returning id)
 insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
   ('1', '1 sugar packet', 0, null, 0),
   ('2', '2 sugar packets', 0, null, 1),
@@ -184,7 +194,8 @@ insert into public.options (group_id, key, label, price_delta_cents, linked_prod
   ('bagel-plain', 'Plain bagel', 0, null, 0),
   ('bagel-everything', 'Everything bagel', 0, null, 1),
   ('bagel-cheese', 'Cheese bagel', 0, null, 2),
-  ('croissant', 'Croissant', 0, null, 3)) as v(key, label, delta, linked, sort);
+  ('bagel-lox', 'Lox bagel', 0, null, 3),
+  ('croissant', 'Croissant', 0, null, 4)) as v(key, label, delta, linked, sort);
 with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
   values ('sandwich-protein', 'protein', 'Protein', 'First protein included · +$1 each extra', true, 3, 1, 100, null, 1) returning id)
 insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
@@ -197,17 +208,37 @@ insert into public.options (group_id, key, label, price_delta_cents, linked_prod
   ('cheddar', 'Cheddar', 0, null, 0),
   ('provolone', 'Provolone', 0, null, 1)) as v(key, label, delta, linked, sort);
 with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
+  values ('sandwich-protein', 'mayo', 'Add', 'Free', false, 1, null, 0, null, 3) returning id)
+insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
+  ('mayonnaise', 'Mayonnaise', 0, null, 0)) as v(key, label, delta, linked, sort);
+with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
   values ('sandwich-egg-cheese', 'bread', 'Bread', null, true, 1, null, 0, null, 0) returning id)
 insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
   ('bagel-plain', 'Plain bagel', 0, null, 0),
   ('bagel-everything', 'Everything bagel', 0, null, 1),
   ('bagel-cheese', 'Cheese bagel', 0, null, 2),
-  ('croissant', 'Croissant', 0, null, 3)) as v(key, label, delta, linked, sort);
+  ('bagel-lox', 'Lox bagel', 0, null, 3),
+  ('croissant', 'Croissant', 0, null, 4)) as v(key, label, delta, linked, sort);
 with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
   values ('sandwich-egg-cheese', 'cheese', 'Cheese', null, false, 1, null, 0, null, 1) returning id)
 insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
   ('cheddar', 'Cheddar', 0, null, 0),
   ('provolone', 'Provolone', 0, null, 1)) as v(key, label, delta, linked, sort);
+with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
+  values ('sandwich-egg-cheese', 'mayo', 'Add', 'Free', false, 1, null, 0, null, 2) returning id)
+insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
+  ('mayonnaise', 'Mayonnaise', 0, null, 0)) as v(key, label, delta, linked, sort);
+with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
+  values ('smoked-salmon-bagel', 'bagel', 'Bagel', null, true, 1, null, 0, null, 0) returning id)
+insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
+  ('bagel-plain', 'Plain bagel', 0, null, 0),
+  ('bagel-everything', 'Everything bagel', 0, null, 1),
+  ('bagel-cheese', 'Cheese bagel', 0, null, 2),
+  ('bagel-lox', 'Lox bagel', 0, null, 3)) as v(key, label, delta, linked, sort);
+with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
+  values ('smoked-salmon-bagel', 'mayo', 'Add', 'Free', false, 1, null, 0, null, 1) returning id)
+insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
+  ('mayonnaise', 'Mayonnaise', 0, null, 0)) as v(key, label, delta, linked, sort);
 with g as (insert into public.option_groups (product_id, key, label, hint, required, max_select, included_count, extra_each_cents, display, sort)
   values ('bagel', 'bagel', 'Bagel', null, true, 1, null, 0, null, 0) returning id)
 insert into public.options (group_id, key, label, price_delta_cents, linked_product_id, sort) select g.id, v.key, v.label, v.delta, v.linked, v.sort from g, (values
@@ -269,6 +300,7 @@ insert into public.options (group_id, key, label, price_delta_cents, linked_prod
 insert into public.product_availability (product_id, is_available) values ('sandwich-combo', true) on conflict (product_id) do nothing;
 insert into public.product_availability (product_id, is_available) values ('sandwich-protein', true) on conflict (product_id) do nothing;
 insert into public.product_availability (product_id, is_available) values ('sandwich-egg-cheese', true) on conflict (product_id) do nothing;
+insert into public.product_availability (product_id, is_available) values ('smoked-salmon-bagel', true) on conflict (product_id) do nothing;
 insert into public.product_availability (product_id, is_available) values ('yogurt-parfait', true) on conflict (product_id) do nothing;
 insert into public.product_availability (product_id, is_available) values ('bagel', true) on conflict (product_id) do nothing;
 insert into public.product_availability (product_id, is_available) values ('muffin', true) on conflict (product_id) do nothing;

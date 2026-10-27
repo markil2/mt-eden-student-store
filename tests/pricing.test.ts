@@ -18,9 +18,36 @@ const protein = catalog["sandwich-protein"];
 const eggCheese = catalog["sandwich-egg-cheese"];
 
 describe("menu rules (confirmed by the cafe)", () => {
-  it("bread is plain, everything or cheese bagel, or croissant — no biscuit", () => {
+  it("bread is plain, everything, cheese or lox bagel, or croissant — no biscuit", () => {
     const bread = protein.optionGroups.find((g) => g.id === "bread")!;
-    expect(bread.options.map((o) => o.label)).toEqual(["Plain bagel", "Everything bagel", "Cheese bagel", "Croissant"]);
+    expect(bread.options.map((o) => o.label)).toEqual([
+      "Plain bagel",
+      "Everything bagel",
+      "Cheese bagel",
+      "Lox bagel",
+      "Croissant",
+    ]);
+  });
+
+  it("every breakfast sandwich offers free, optional mayo", () => {
+    for (const s of [combo, protein, eggCheese, catalog["smoked-salmon-bagel"]]) {
+      const mayo = s.optionGroups.find((g) => g.id === "mayo")!;
+      expect(mayo.required).toBe(false);
+      expect(mayo.options.map((o) => [o.label, o.priceDeltaCents])).toEqual([["Mayonnaise", 0]]);
+    }
+  });
+
+  it("the $8 Smoked Salmon Bagel requires a bagel type (no croissant)", () => {
+    const salmon = catalog["smoked-salmon-bagel"];
+    expect(salmon.priceCents).toBe(800);
+    expect(salmon.optionGroups[0].options.map((o) => o.label)).toEqual([
+      "Plain bagel",
+      "Everything bagel",
+      "Cheese bagel",
+      "Lox bagel",
+    ]);
+    expect(missingRequiredGroup(salmon, emptySelections(salmon))).toBe("Bagel");
+    expect(unitPriceCents(salmon, { bagel: ["bagel-lox"], mayo: ["mayonnaise"] })).toBe(800);
   });
 
   it("protein is turkey, chicken sausage or bacon — pick up to 3, no separate bacon add-on", () => {

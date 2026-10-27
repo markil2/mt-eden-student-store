@@ -4,7 +4,8 @@ Phase 1 is built on the answers below. Menu data lives in `lib/data/menu.ts`, st
 
 ## Confirmed
 **Menu**
-- Sandwich bread: **Plain, Everything or Cheese bagel**, or **Croissant**. No biscuit.
+- Sandwich bread: **Plain, Everything, Cheese or Lox bagel**, or **Croissant**. No biscuit. Free **Mayonnaise** option on every breakfast sandwich.
+- **Smoked Salmon Bagel**: $8, smoked salmon and cream cheese, choice of plain/everything/cheese/lox bagel.
 - Protein (the $8 sandwich and the $10 combo): **Turkey, Chicken sausage or Bacon**. Pick 1–3; the first is included, each extra is **+$1**.
 - Cheese (Cheddar or Provolone) is **optional** on every sandwich.
 - $10 combo drink: any drink priced $3 or less (OJ, hot coffee, tea, water, lemonade, energy drink, Gatorade, hot chocolate).

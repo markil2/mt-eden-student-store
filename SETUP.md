@@ -10,7 +10,7 @@ This takes about 10 minutes. You only do it once.
 ## 2. Create the tables
 1. In the project, open **SQL Editor** → **New query**.
 2. Open `supabase/schema.sql` from this folder, copy everything, paste it in, and click **Run**.
-3. Do the same with each file in `supabase/migrations/`, in order (currently `002_pay_in_person_and_limits.sql`, `003_menu_update.sql`, `004_coffee_add_ins.sql`, `005_creamer_sugar_amounts.sql`, `006_tea_flavors.sql`, `007_hot_drinks_section.sql` and `008_italian_soda_flavors.sql`).
+3. Do the same with each file in `supabase/migrations/`, in order (currently `002_pay_in_person_and_limits.sql`, `003_menu_update.sql`, `004_coffee_add_ins.sql`, `005_creamer_sugar_amounts.sql`, `006_tea_flavors.sql`, `007_hot_drinks_section.sql`, `008_italian_soda_flavors.sql` and `009_salmon_bagel_lox_mayo.sql`).
 4. Make another new query with `supabase/seed.sql` (the menu, stock and store settings) and click **Run**.
 
 > If you ever re-run `schema.sql`, run the migrations again afterwards.

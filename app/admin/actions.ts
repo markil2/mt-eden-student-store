@@ -1,7 +1,8 @@
 "use server";
 
 import { updateTag } from "next/cache";
-import type { StoreSettings } from "@/lib/types";
+import type { OptionGroup, StoreSettings } from "@/lib/types";
+import { fromEditable, type EditableGroup } from "@/lib/menu/option-editor";
 import { NotAuthorized, requireStaff } from "@/lib/auth/staff";
 import { STORE_DATA_TAG } from "@/lib/data/public-data";
 import { getServiceSupabase } from "@/lib/supabase/server";
@@ -13,12 +14,12 @@ import { getServiceSupabase } from "@/lib/supabase/server";
  *   3. refreshes the cached public menu so customers see the change.
  */
 
-export type ActionResult = { ok: true } | { ok: false; error: string };
+export type ActionResult = { ok: true; id?: string } | { ok: false; error: string };
 
-async function run(fn: () => Promise<void>): Promise<ActionResult> {
+async function run(fn: () => Promise<void | string>): Promise<ActionResult> {
   try {
-    await fn();
-    return { ok: true };
+    const id = await fn();
+    return id ? { ok: true, id } : { ok: true };
   } catch (err) {
     if (err instanceof NotAuthorized) return { ok: false, error: err.message };
     console.error("admin action failed", err);
@@ -99,6 +100,78 @@ export async function createProductAction(input: ProductInput): Promise<ActionRe
     if (error) throw error;
     const { error: stockError } = await supabase.from("product_availability").insert({ product_id: id, is_available: true });
     if (stockError) throw stockError;
+    updateTag(STORE_DATA_TAG);
+    return id;
+  });
+}
+
+type SupabaseLike = Awaited<ReturnType<typeof requireStaff>>["supabase"];
+
+async function writeOptionGroups(supabase: SupabaseLike, productId: string, groups: OptionGroup[]) {
+  const { error: deleteError } = await supabase.from("option_groups").delete().eq("product_id", productId);
+  if (deleteError) throw deleteError;
+  for (const [gi, g] of groups.entries()) {
+    const { data, error } = await supabase
+      .from("option_groups")
+      .insert({
+        product_id: productId,
+        key: g.id,
+        label: g.label,
+        hint: g.hint ?? null,
+        required: g.required,
+        max_select: g.max,
+        included_count: g.includedCount ?? null,
+        extra_each_cents: g.extraEachCents ?? 0,
+        display: g.display ?? null,
+        sort: gi,
+      })
+      .select("id")
+      .single();
+    if (error) throw error;
+    const { error: optionsError } = await supabase.from("options").insert(
+      g.options.map((o, oi) => ({
+        group_id: data.id,
+        key: o.id,
+        label: o.label,
+        price_delta_cents: o.priceDeltaCents,
+        linked_product_id: o.productId ?? null,
+        sort: oi,
+      })),
+    );
+    if (optionsError) throw optionsError;
+  }
+}
+
+/**
+ * Replaces an item's option groups (bread, flavors, add-ons…) with what the
+ * manager built in the editor. Validated on the server with the same rules as
+ * the editor; if writing fails partway, the previous options are put back.
+ */
+export async function saveProductOptionsAction(productId: string, editable: EditableGroup[]): Promise<ActionResult> {
+  return run(async () => {
+    const { supabase } = await requireStaff("manager");
+    const parsed = fromEditable(editable);
+    if (!parsed.ok) throw new Error(parsed.error);
+
+    // Linked choices (e.g. combo drinks) must point at real items.
+    const linked = [...new Set(parsed.groups.flatMap((g) => g.options.map((o) => o.productId).filter(Boolean)))] as string[];
+    if (linked.length) {
+      const { data: found } = await supabase.from("products").select("id").in("id", linked);
+      const ok = new Set((found ?? []).map((p: { id: string }) => p.id));
+      for (const g of parsed.groups) for (const o of g.options) if (o.productId && !ok.has(o.productId)) delete o.productId;
+    }
+
+    const { fetchPublicStoreData } = await import("@/lib/data/catalog-mapper");
+    const before = (await fetchPublicStoreData(supabase)).products.find((p) => p.id === productId);
+    if (!before) throw new Error("That item no longer exists.");
+
+    try {
+      await writeOptionGroups(supabase, productId, parsed.groups);
+    } catch (err) {
+      await writeOptionGroups(supabase, productId, before.optionGroups).catch(() => {});
+      throw err;
+    }
+    await supabase.from("products").update({ updated_at: new Date().toISOString() }).eq("id", productId);
     updateTag(STORE_DATA_TAG);
   });
 }

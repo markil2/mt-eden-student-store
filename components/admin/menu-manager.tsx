@@ -13,7 +13,9 @@ import { ProductImage } from "@/components/ui/product-image";
 import { Switch } from "@/components/ui/switch";
 import { Sheet } from "@/components/ui/sheet";
 import { buttonClasses } from "@/components/ui/button";
-import { archiveProductAction, createProductAction, setAvailabilityAction, updateProductAction } from "@/app/admin/actions";
+import { archiveProductAction, createProductAction, saveProductOptionsAction, setAvailabilityAction, updateProductAction } from "@/app/admin/actions";
+import { toEditable, type EditableGroup } from "@/lib/menu/option-editor";
+import { OptionGroupsEditor } from "./option-groups-editor";
 
 export function MenuManager() {
   const { products } = useCatalog();
@@ -108,6 +110,7 @@ export function MenuManager() {
         open={editing !== null}
         onOpenChange={(o) => !o && setEditing(null)}
         title={editing === "new" ? "Add a menu item" : `Edit ${editing?.name ?? ""}`}
+        large
       >
         {editing && (
           <EditForm
@@ -123,6 +126,9 @@ export function MenuManager() {
 
 function EditForm({ product, onDone }: { product: Product | null; onDone: () => void }) {
   const categories = useStoreData((s) => s.categories);
+  const allProducts = useStoreData((s) => s.products);
+  const [initialGroups] = useState<EditableGroup[]>(() => (product?.optionGroups ?? []).map(toEditable));
+  const [groups, setGroups] = useState<EditableGroup[]>(initialGroups);
   const [name, setName] = useState(product?.name ?? "");
   const [description, setDescription] = useState(product?.description ?? "");
   const [price, setPrice] = useState(product ? (product.priceCents / 100).toFixed(2) : "");
@@ -165,8 +171,20 @@ function EditForm({ product, onDone }: { product: Product | null; onDone: () => 
       ...(image ? { imageUrl: image.url, imageAlt: name } : {}),
     };
     const result = product ? await updateProductAction(product.id, input) : await createProductAction(input);
+    if (!result.ok) {
+      setSaving(false);
+      return setError(result.error);
+    }
+    // Save the choices (bread, flavors, add-ons…) if they changed.
+    const productId = product?.id ?? result.id;
+    if (productId && JSON.stringify(groups) !== JSON.stringify(initialGroups)) {
+      const optionsResult = await saveProductOptionsAction(productId, groups);
+      if (!optionsResult.ok) {
+        setSaving(false);
+        return setError(product ? optionsResult.error : `${name} was added, but its choices weren't saved: ${optionsResult.error}`);
+      }
+    }
     setSaving(false);
-    if (!result.ok) return setError(result.error);
     toast(product ? "Saved" : `${name} added to the menu`);
     onDone();
   }
@@ -246,11 +264,9 @@ function EditForm({ product, onDone }: { product: Product | null; onDone: () => 
         <input type="checkbox" checked={popular} onChange={(e) => setPopular(e.target.checked)} className="size-5 accent-[#0a3473]" />
         Show in “Campus favorites” on the homepage
       </label>
-      {product && product.optionGroups.length > 0 && (
-        <p className="text-sm text-ink-muted">
-          Options (bread, protein, etc.) are set up in the database. Ask your developer to change them.
-        </p>
-      )}
+      <div className="border-t border-line pt-5">
+        <OptionGroupsEditor value={groups} onChange={setGroups} products={allProducts} currentProductId={product?.id} />
+      </div>
       {error && (
         <p className="text-sm font-medium text-[#a3361f]" role="alert">
           {error}

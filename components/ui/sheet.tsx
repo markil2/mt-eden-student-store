@@ -20,6 +20,7 @@ export function Sheet({
   variant = "center",
   children,
   footer,
+  large = false,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -28,6 +29,8 @@ export function Sheet({
   variant?: "center" | "side";
   children: React.ReactNode;
   footer?: React.ReactNode;
+  /** Wider centered dialog on larger screens (e.g. the menu item editor). */
+  large?: boolean;
 }) {
   const wide = useMediaQuery("(min-width: 640px)");
   const hidden = variant === "side" && wide ? { x: "100%", y: 0 } : wide ? { y: 24, opacity: 0, scale: 0.98 } : { y: "100%" };
@@ -57,7 +60,7 @@ export function Sheet({
                     "pointer-events-auto flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-[1.75rem] bg-cream shadow-2xl outline-none",
                     variant === "side"
                       ? "sm:max-h-none sm:w-[26rem] sm:rounded-none sm:rounded-l-[1.75rem]"
-                      : "sm:max-h-[86dvh] sm:max-w-lg sm:rounded-[1.75rem]",
+                      : cn("sm:max-h-[86dvh] sm:rounded-[1.75rem]", large ? "sm:max-w-2xl" : "sm:max-w-lg"),
                   )}
                   initial={hidden}
                   animate={{ x: 0, y: 0, opacity: 1, scale: 1 }}
